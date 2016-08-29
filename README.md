@@ -1,2 +1,0 @@
-# georentserver
-GeoRent Server App
