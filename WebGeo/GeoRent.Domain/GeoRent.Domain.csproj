@@ -46,10 +46,8 @@
   <ItemGroup>
     <Compile Include="Entities\City.cs" />
     <Compile Include="Entities\Location.cs" />
-    <Compile Include="Entities\Locator.cs" />
     <Compile Include="Entities\Match.cs" />
     <Compile Include="Entities\Message.cs" />
-    <Compile Include="Entities\Occupier.cs" />
     <Compile Include="Entities\Preference.cs" />
     <Compile Include="Entities\Residence.cs" />
     <Compile Include="Entities\ResidenceImage.cs" />

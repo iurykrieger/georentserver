@@ -8,7 +8,7 @@ namespace GeoRent.Domain.Entities
         {
             idUser = Guid.NewGuid();
         }
-
+        
         public Guid idUser { get; set; }
         public String name { get; set; }
         public DateTime birthDate { get; set; }
@@ -16,6 +16,8 @@ namespace GeoRent.Domain.Entities
         public String phone { get; set; }
         public String password { get; set; }
         public int credits { get; set; }
+        public int range { get; set; }
+        public int occupierLocator { get; set; }
         public virtual City idCity { get; set; }
     }
 }

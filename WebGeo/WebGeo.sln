@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebGeo", "WebGeo\WebGeo.csproj", "{F3FA7319-CFD3-4E91-901B-4C24406D71FE}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Presentation", "1 - Presentation", "{DF7EA162-DF7B-46E6-9DB7-342D2AD66E92}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Services", "2 - Services", "{9C6BB7C0-CE4D-4BF5-A3C5-1B5B2796660B}"
@@ -21,16 +19,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoRent.Infra.Data", "GeoRe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoRent.Domain", "GeoRent.Domain\GeoRent.Domain.csproj", "{A64B5C71-ED14-4D46-93D4-18304A54C29C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoRent.WebService", "GeoRent.WebService\GeoRent.WebService.csproj", "{C447969B-72DF-4B8D-BFA0-9AD54D372A1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F3FA7319-CFD3-4E91-901B-4C24406D71FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3FA7319-CFD3-4E91-901B-4C24406D71FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3FA7319-CFD3-4E91-901B-4C24406D71FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3FA7319-CFD3-4E91-901B-4C24406D71FE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0CB81024-930F-4672-9264-D5B9ABA7AD40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CB81024-930F-4672-9264-D5B9ABA7AD40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CB81024-930F-4672-9264-D5B9ABA7AD40}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,14 +35,18 @@ Global
 		{A64B5C71-ED14-4D46-93D4-18304A54C29C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A64B5C71-ED14-4D46-93D4-18304A54C29C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A64B5C71-ED14-4D46-93D4-18304A54C29C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C447969B-72DF-4B8D-BFA0-9AD54D372A1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C447969B-72DF-4B8D-BFA0-9AD54D372A1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C447969B-72DF-4B8D-BFA0-9AD54D372A1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C447969B-72DF-4B8D-BFA0-9AD54D372A1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F3FA7319-CFD3-4E91-901B-4C24406D71FE} = {DF7EA162-DF7B-46E6-9DB7-342D2AD66E92}
 		{8278ADB4-4664-489F-8A71-1DA79C6F3F69} = {E794930F-ED3E-4084-BE13-8613BC410BED}
 		{0CB81024-930F-4672-9264-D5B9ABA7AD40} = {8278ADB4-4664-489F-8A71-1DA79C6F3F69}
 		{A64B5C71-ED14-4D46-93D4-18304A54C29C} = {979ED6E1-61F8-4249-B8AE-5DA826161EF0}
+		{C447969B-72DF-4B8D-BFA0-9AD54D372A1F} = {9C6BB7C0-CE4D-4BF5-A3C5-1B5B2796660B}
 	EndGlobalSection
 EndGlobal

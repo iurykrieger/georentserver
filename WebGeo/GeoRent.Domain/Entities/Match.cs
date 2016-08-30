@@ -14,6 +14,6 @@ namespace GeoRent.Domain.Entities
         public DateTime dateTime { get; set; }
         public bool diamond { get; set; }
         public virtual Residence Residence { get; set; }
-        public virtual Occupier idOccupier { get; set; }
+        public virtual User idUser { get; set; }
     }
 }

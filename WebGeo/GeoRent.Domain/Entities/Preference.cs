@@ -14,7 +14,7 @@ namespace GeoRent.Domain.Entities
         public bool child { get; set; }
         public int stay { get; set; }
         public bool pet { get; set; }
-        public virtual Occupier idOccupier { get; set; }
+        public virtual User idUser { get; set; }
         public virtual Residence idResidence { get; set; }
     }
 }

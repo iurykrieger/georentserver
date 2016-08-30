@@ -11,7 +11,7 @@ namespace GeoRent.Domain.Entities
 
         public Guid idResidence { get; set; }
 
-        public virtual Locator idLocator { get; set; }
+        public virtual User idUser { get; set; }
         public virtual Location idLocation { get; set; }
         public virtual Preference idResidencePreference { get; set; }
     }
