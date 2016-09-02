@@ -2,7 +2,7 @@
 
 namespace GeoRent.Domain.Interfaces.Repository
 {
-    public interface IMatchRepository : IRepository<Match>
+    public interface ILikeRepository : IRepository<Like>
     {
     }
 }

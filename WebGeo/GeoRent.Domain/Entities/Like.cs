@@ -2,14 +2,14 @@
 
 namespace GeoRent.Domain.Entities
 {
-    public class Match
+    public class Like
     {
-        public Match()
+        public Like()
         {
-            idMatch = Guid.NewGuid();
+            idLike = Guid.NewGuid();
         }
 
-        public Guid idMatch { get; set; }
+        public Guid idLike { get; set; }
         public bool like { get; set; }
         public DateTime dateTime { get; set; }
         public bool diamond { get; set; }

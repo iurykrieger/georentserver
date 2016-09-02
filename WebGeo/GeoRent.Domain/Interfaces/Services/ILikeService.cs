@@ -4,13 +4,13 @@ using GeoRent.Domain.Entities;
 
 namespace GeoRent.Domain.Interfaces.Services
 {
-    public interface IMatchService : IDisposable
+    public interface ILikeService : IDisposable
     {
-        Match Add(Match obj);
-        Match Update(Match obj);
+        Like Add(Like obj);
+        Like Update(Like obj);
         void Remove(Guid id);
-        Match GetById(Guid id);
-        IEnumerable<Match> GetAll();
+        Like GetById(Guid id);
+        IEnumerable<Like> GetAll();
         int SaveChanges();
 
     }

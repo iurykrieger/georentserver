@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GeoRent.Domain.Entities
 {
@@ -14,5 +15,6 @@ namespace GeoRent.Domain.Entities
         public virtual User idUser { get; set; }
         public virtual Location idLocation { get; set; }
         public virtual Preference idResidencePreference { get; set; }
+        public virtual List<ResidenceImage> ResidenceImages { get; set; }
     }
 }

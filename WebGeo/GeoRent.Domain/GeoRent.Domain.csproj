@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Entities\City.cs" />
     <Compile Include="Entities\Location.cs" />
-    <Compile Include="Entities\Match.cs" />
+    <Compile Include="Entities\Like.cs" />
     <Compile Include="Entities\Message.cs" />
     <Compile Include="Entities\Preference.cs" />
     <Compile Include="Entities\Residence.cs" />
@@ -57,7 +57,7 @@
     <Compile Include="Interfaces\Repository\IResidenceRepository.cs" />
     <Compile Include="Interfaces\Repository\IPreferenteRepository.cs" />
     <Compile Include="Interfaces\Repository\IMessageRepository.cs" />
-    <Compile Include="Interfaces\Repository\IMatchRepository.cs" />
+    <Compile Include="Interfaces\Repository\ILikeRepository.cs" />
     <Compile Include="Interfaces\Repository\ILocationRepository.cs" />
     <Compile Include="Interfaces\Repository\ICityRepository.cs" />
     <Compile Include="Interfaces\Repository\IOccupierRepository.cs" />
@@ -68,7 +68,7 @@
     <Compile Include="Interfaces\Services\ICityService.cs" />
     <Compile Include="Interfaces\Services\ILocationService.cs" />
     <Compile Include="Interfaces\Services\ILocatorService.cs" />
-    <Compile Include="Interfaces\Services\IMatchService.cs" />
+    <Compile Include="Interfaces\Services\ILikeService.cs" />
     <Compile Include="Interfaces\Services\IMessageService.cs" />
     <Compile Include="Interfaces\Services\IOccupierService.cs" />
     <Compile Include="Interfaces\Services\IResidenceService.cs" />
@@ -81,7 +81,7 @@
     <Compile Include="Services\PreferenceService.cs" />
     <Compile Include="Services\OccupierService.cs" />
     <Compile Include="Services\MessageService.cs" />
-    <Compile Include="Services\MatchService.cs" />
+    <Compile Include="Services\LikeService.cs" />
     <Compile Include="Services\CityService.cs" />
     <Compile Include="Services\LocationService .cs" />
     <Compile Include="Services\UserImageService.cs" />
