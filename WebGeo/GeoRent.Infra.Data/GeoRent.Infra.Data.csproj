@@ -58,11 +58,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\GeoRentContext.cs" />
+    <Compile Include="EntityConfig\CityConfig.cs" />
+    <Compile Include="EntityConfig\LikeConfig.cs" />
+    <Compile Include="EntityConfig\LocationConfig.cs" />
+    <Compile Include="EntityConfig\MessageConfig.cs" />
+    <Compile Include="EntityConfig\PreferenceConfig.cs" />
+    <Compile Include="EntityConfig\ResidenceConfig.cs" />
+    <Compile Include="EntityConfig\ResidenceImageConfig.cs" />
+    <Compile Include="EntityConfig\UserConfig.cs" />
+    <Compile Include="EntityConfig\UserImageConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeoRent.Domain\GeoRent.Domain.csproj">
+      <Project>{a64b5c71-ed14-4d46-93d4-18304a54c29c}</Project>
+      <Name>GeoRent.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

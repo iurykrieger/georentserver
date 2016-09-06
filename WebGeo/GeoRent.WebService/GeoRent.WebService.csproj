@@ -21,6 +21,7 @@
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <ApplicationInsightsResourceId>/subscriptions/3de82861-1e49-4099-a1bd-5a1e159fe417/resourcegroups/Default-ApplicationInsights-CentralUS/providers/microsoft.insights/components/GeoRent.WebService</ApplicationInsightsResourceId>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,6 +39,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabaseSettings>
+      <Objects>
+      </Objects>
+    </PublishDatabaseSettings>
+    <IncludeIisSettings>true</IncludeIisSettings>
+    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -88,8 +95,21 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\CityService.svc.cs">
+      <DependentUpon>CityService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Services\ICityService.cs" />
+    <Compile Include="Services\LikeService.cs" />
+    <Compile Include="Services\LocationService .cs" />
+    <Compile Include="Services\MessageService.cs" />
+    <Compile Include="Services\PreferenceService.cs" />
+    <Compile Include="Services\ResidenceService.cs" />
+    <Compile Include="Services\UserImageService.cs" />
+    <Compile Include="Services\UserService.cs" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Services\CityService.svc" />
+    <Content Include="teste.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -101,12 +121,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Service1.xamlx">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -121,6 +135,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Service References\Application Insights\ConnectedService.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeoRent.Domain\GeoRent.Domain.csproj">
+      <Project>{a64b5c71-ed14-4d46-93d4-18304a54c29c}</Project>
+      <Name>GeoRent.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GeoRent.Infra.Data\GeoRent.Infra.Data.csproj">
+      <Project>{0cb81024-930f-4672-9264-d5b9aba7ad40}</Project>
+      <Name>GeoRent.Infra.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

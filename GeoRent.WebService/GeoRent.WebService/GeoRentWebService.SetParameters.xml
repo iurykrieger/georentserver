@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <setParameter name="IIS Web Application Name" value="GeoRent" />
+  <setParameter name="georentdbEntities-Web.config Connection String" value="metadata=res://*/ModelGeoRentDB.csdl|res://*/ModelGeoRentDB.ssdl|res://*/ModelGeoRentDB.msl;provider=MySql.Data.MySqlClient;provider connection string=&quot;User Id=root;Password=1234;Host=localhost;Database=georentdb&quot;" />
+</parameters>

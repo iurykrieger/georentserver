@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="GeoRent.WebService.Services.CityService" CodeBehind="CityService.svc.cs" %>

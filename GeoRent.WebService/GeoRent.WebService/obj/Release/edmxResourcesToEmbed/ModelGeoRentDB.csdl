@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="georentdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="city">
+    <Key>
+      <PropertyRef Name="idCity" />
+    </Key>
+    <Property Name="idCity" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="UF" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="users" Relationship="Self.fkUserCity" FromRole="city" ToRole="user" />
+    <NavigationProperty Name="locations" Relationship="Self.idLocationCity" FromRole="city" ToRole="location" />
+  </EntityType>
+  <EntityType Name="like">
+    <Key>
+      <PropertyRef Name="idLike" />
+      <PropertyRef Name="idUser" />
+      <PropertyRef Name="idResidence" />
+    </Key>
+    <Property Name="idLike" Type="Int32" Nullable="false" />
+    <Property Name="like1" Type="Boolean" Nullable="false" />
+    <Property Name="dateTime" Type="DateTime" />
+    <Property Name="diamond" Type="Boolean" Nullable="false" />
+    <Property Name="idUser" Type="Int32" Nullable="false" />
+    <Property Name="idResidence" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="residence" Relationship="Self.fk_Like_Residence1" FromRole="like" ToRole="residence" />
+    <NavigationProperty Name="user" Relationship="Self.fk_Like_User1" FromRole="like" ToRole="user" />
+  </EntityType>
+  <EntityType Name="location">
+    <Key>
+      <PropertyRef Name="idLocation" />
+    </Key>
+    <Property Name="idLocation" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="latitude" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="longitude" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="idCity" Type="Int32" />
+    <NavigationProperty Name="city" Relationship="Self.idLocationCity" FromRole="location" ToRole="city" />
+    <NavigationProperty Name="residences" Relationship="Self.fkResidenceLocation" FromRole="location" ToRole="residence" />
+  </EntityType>
+  <EntityType Name="message">
+    <Key>
+      <PropertyRef Name="idMessage" />
+      <PropertyRef Name="from" />
+      <PropertyRef Name="to" />
+    </Key>
+    <Property Name="idMessage" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="from" Type="Int32" Nullable="false" />
+    <Property Name="to" Type="Int32" Nullable="false" />
+    <Property Name="message1" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <Property Name="dateTime" Type="DateTime" />
+    <Property Name="resource" Type="Int32" />
+    <Property Name="path" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="user" Relationship="Self.fkMessageUserFrom" FromRole="message" ToRole="user" />
+    <NavigationProperty Name="user1" Relationship="Self.fkMessageUserTo" FromRole="message" ToRole="user" />
+  </EntityType>
+  <EntityType Name="preference">
+    <Key>
+      <PropertyRef Name="idPreference" />
+    </Key>
+    <Property Name="idPreference" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="sponsor" Type="Boolean" />
+    <Property Name="room" Type="Int32" />
+    <Property Name="bathroom" Type="Int32" />
+    <Property Name="vacancy" Type="Int32" />
+    <Property Name="laundry" Type="Boolean" />
+    <Property Name="income" Type="Decimal" />
+    <Property Name="condominium" Type="Boolean" />
+    <Property Name="idResidence" Type="Int32" />
+    <Property Name="child" Type="Boolean" />
+    <Property Name="stay" Type="Int32" />
+    <Property Name="pet" Type="Boolean" />
+    <Property Name="idUser" Type="Int32" />
+    <NavigationProperty Name="user" Relationship="Self.fk_Preference_User1" FromRole="preference" ToRole="user" />
+  </EntityType>
+  <EntityType Name="residence">
+    <Key>
+      <PropertyRef Name="idResidence" />
+      <PropertyRef Name="idUser" />
+    </Key>
+    <Property Name="idResidence" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idLocator" Type="Int32" Nullable="false" />
+    <Property Name="idResidencePref" Type="Int32" Nullable="false" />
+    <Property Name="idLocation" Type="Int32" Nullable="false" />
+    <Property Name="idUser" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="likes" Relationship="Self.fk_Like_Residence1" FromRole="residence" ToRole="like" />
+    <NavigationProperty Name="location" Relationship="Self.fkResidenceLocation" FromRole="residence" ToRole="location" />
+    <NavigationProperty Name="user" Relationship="Self.fk_Residence_User1" FromRole="residence" ToRole="user" />
+    <NavigationProperty Name="residenceimages" Relationship="Self.fk_ResidenceImage_Residence1" FromRole="residence" ToRole="residenceimage" />
+  </EntityType>
+  <EntityType Name="residenceimage">
+    <Key>
+      <PropertyRef Name="idResidenceImage" />
+      <PropertyRef Name="idResidence" />
+      <PropertyRef Name="idUser" />
+    </Key>
+    <Property Name="idResidenceImage" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="path" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="resource" Type="Int32" Nullable="false" />
+    <Property Name="order" Type="Int32" Nullable="false" />
+    <Property Name="idResidence" Type="Int32" Nullable="false" />
+    <Property Name="idUser" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="residence" Relationship="Self.fk_ResidenceImage_Residence1" FromRole="residenceimage" ToRole="residence" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="idUser" />
+    </Key>
+    <Property Name="idUser" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="birthDate" Type="DateTime" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="phone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="credits" Type="Decimal" Nullable="false" />
+    <Property Name="idCity" Type="Int32" Nullable="false" />
+    <Property Name="type" Type="Int32" Nullable="false" />
+    <Property Name="range" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="city" Relationship="Self.fkUserCity" FromRole="user" ToRole="city" />
+    <NavigationProperty Name="likes" Relationship="Self.fk_Like_User1" FromRole="user" ToRole="like" />
+    <NavigationProperty Name="messages" Relationship="Self.fkMessageUserFrom" FromRole="user" ToRole="message" />
+    <NavigationProperty Name="messages1" Relationship="Self.fkMessageUserTo" FromRole="user" ToRole="message" />
+    <NavigationProperty Name="preferences" Relationship="Self.fk_Preference_User1" FromRole="user" ToRole="preference" />
+    <NavigationProperty Name="residences" Relationship="Self.fk_Residence_User1" FromRole="user" ToRole="residence" />
+    <NavigationProperty Name="userimages" Relationship="Self.fkUserImageUser" FromRole="user" ToRole="userimage" />
+  </EntityType>
+  <EntityType Name="userimage">
+    <Key>
+      <PropertyRef Name="idUserImage" />
+    </Key>
+    <Property Name="idUserImage" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idUser" Type="Int32" Nullable="false" />
+    <Property Name="path" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="resource" Type="Int32" Nullable="false" />
+    <Property Name="order" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="user" Relationship="Self.fkUserImageUser" FromRole="userimage" ToRole="user" />
+  </EntityType>
+  <Association Name="fkUserCity">
+    <End Role="city" Type="Self.city" Multiplicity="1" />
+    <End Role="user" Type="Self.user" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="city">
+        <PropertyRef Name="idCity" />
+      </Principal>
+      <Dependent Role="user">
+        <PropertyRef Name="idCity" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="idLocationCity">
+    <End Role="city" Type="Self.city" Multiplicity="0..1" />
+    <End Role="location" Type="Self.location" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="city">
+        <PropertyRef Name="idCity" />
+      </Principal>
+      <Dependent Role="location">
+        <PropertyRef Name="idCity" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Like_Residence1">
+    <End Role="residence" Type="Self.residence" Multiplicity="1" />
+    <End Role="like" Type="Self.like" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="residence">
+        <PropertyRef Name="idResidence" />
+        <PropertyRef Name="idUser" />
+      </Principal>
+      <Dependent Role="like">
+        <PropertyRef Name="idResidence" />
+        <PropertyRef Name="idUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Like_User1">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="like" Type="Self.like" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="idUser" />
+      </Principal>
+      <Dependent Role="like">
+        <PropertyRef Name="idUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fkResidenceLocation">
+    <End Role="location" Type="Self.location" Multiplicity="1" />
+    <End Role="residence" Type="Self.residence" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="location">
+        <PropertyRef Name="idLocation" />
+      </Principal>
+      <Dependent Role="residence">
+        <PropertyRef Name="idLocation" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fkMessageUserFrom">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="message" Type="Self.message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="idUser" />
+      </Principal>
+      <Dependent Role="message">
+        <PropertyRef Name="from" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fkMessageUserTo">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="message" Type="Self.message" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="idUser" />
+      </Principal>
+      <Dependent Role="message">
+        <PropertyRef Name="to" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Preference_User1">
+    <End Role="user" Type="Self.user" Multiplicity="0..1" />
+    <End Role="preference" Type="Self.preference" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="idUser" />
+      </Principal>
+      <Dependent Role="preference">
+        <PropertyRef Name="idUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Residence_User1">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="residence" Type="Self.residence" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="idUser" />
+      </Principal>
+      <Dependent Role="residence">
+        <PropertyRef Name="idUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_ResidenceImage_Residence1">
+    <End Role="residence" Type="Self.residence" Multiplicity="1" />
+    <End Role="residenceimage" Type="Self.residenceimage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="residence">
+        <PropertyRef Name="idResidence" />
+        <PropertyRef Name="idUser" />
+      </Principal>
+      <Dependent Role="residenceimage">
+        <PropertyRef Name="idResidence" />
+        <PropertyRef Name="idUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fkUserImageUser">
+    <End Role="user" Type="Self.user" Multiplicity="1" />
+    <End Role="userimage" Type="Self.userimage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user">
+        <PropertyRef Name="idUser" />
+      </Principal>
+      <Dependent Role="userimage">
+        <PropertyRef Name="idUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="georentdbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="cities" EntityType="Self.city" />
+    <EntitySet Name="likes" EntityType="Self.like" />
+    <EntitySet Name="locations" EntityType="Self.location" />
+    <EntitySet Name="messages" EntityType="Self.message" />
+    <EntitySet Name="preferences" EntityType="Self.preference" />
+    <EntitySet Name="residences" EntityType="Self.residence" />
+    <EntitySet Name="residenceimages" EntityType="Self.residenceimage" />
+    <EntitySet Name="users" EntityType="Self.user" />
+    <EntitySet Name="userimages" EntityType="Self.userimage" />
+    <AssociationSet Name="fkUserCity" Association="Self.fkUserCity">
+      <End Role="city" EntitySet="cities" />
+      <End Role="user" EntitySet="users" />
+    </AssociationSet>
+    <AssociationSet Name="idLocationCity" Association="Self.idLocationCity">
+      <End Role="city" EntitySet="cities" />
+      <End Role="location" EntitySet="locations" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Like_Residence1" Association="Self.fk_Like_Residence1">
+      <End Role="residence" EntitySet="residences" />
+      <End Role="like" EntitySet="likes" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Like_User1" Association="Self.fk_Like_User1">
+      <End Role="user" EntitySet="users" />
+      <End Role="like" EntitySet="likes" />
+    </AssociationSet>
+    <AssociationSet Name="fkResidenceLocation" Association="Self.fkResidenceLocation">
+      <End Role="location" EntitySet="locations" />
+      <End Role="residence" EntitySet="residences" />
+    </AssociationSet>
+    <AssociationSet Name="fkMessageUserFrom" Association="Self.fkMessageUserFrom">
+      <End Role="user" EntitySet="users" />
+      <End Role="message" EntitySet="messages" />
+    </AssociationSet>
+    <AssociationSet Name="fkMessageUserTo" Association="Self.fkMessageUserTo">
+      <End Role="user" EntitySet="users" />
+      <End Role="message" EntitySet="messages" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Preference_User1" Association="Self.fk_Preference_User1">
+      <End Role="user" EntitySet="users" />
+      <End Role="preference" EntitySet="preferences" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Residence_User1" Association="Self.fk_Residence_User1">
+      <End Role="user" EntitySet="users" />
+      <End Role="residence" EntitySet="residences" />
+    </AssociationSet>
+    <AssociationSet Name="fk_ResidenceImage_Residence1" Association="Self.fk_ResidenceImage_Residence1">
+      <End Role="residence" EntitySet="residences" />
+      <End Role="residenceimage" EntitySet="residenceimages" />
+    </AssociationSet>
+    <AssociationSet Name="fkUserImageUser" Association="Self.fkUserImageUser">
+      <End Role="user" EntitySet="users" />
+      <End Role="userimage" EntitySet="userimages" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,1012 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApplications.Utilities.Serialization</name>
+    </assembly>
+    <members>
+        <member name="T:WebApplications.Utilities.Serialization.DelegateSerializer">
+            <summary>
+              Allows serialization of delegates.
+            </summary>
+            <remarks>
+              Anonymous method serialization: (http://www.codeproject.com/KB/cs/AnonymousSerialization.aspx ).
+            </remarks>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.DelegateSerializer.#ctor(System.Delegate)">
+            <summary>
+              Creates a new instance of <see cref="T:WebApplications.Utilities.Serialization.DelegateSerializer"/>
+            </summary>
+            <param name="delegate">The delegate to serialize.</param>
+            <example>
+              <code>formatter.Serialize(stream, new DelegateSerializer(del));</code>
+            </example>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.DelegateSerializer.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+              Creates a new instance of <see cref="T:WebApplications.Utilities.Serialization.DelegateSerializer"/>
+            </summary>
+            <param name="info">
+              <para>The <see cref="T:System.Runtime.Serialization.SerializationInfo"/>.</para>
+              <para>This object stores all the required information for serializing/deserializing the delegate.</para>
+            </param>
+            <param name="context">
+              The <see cref="T:System.Runtime.Serialization.StreamingContext"/> for this serialization.
+            </param>
+            <example>
+              <code>formatter.Serialize(stream, new DelegateSerializer(info, context));</code>
+            </example>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.DelegateSerializer.OnDeserialized(System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Called when the class has been deserialized.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.DelegateSerializer.System#Runtime#Serialization#ISerializable#GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+              Populates the provided <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with the data needed to
+              serialize the object.
+            </summary>
+            <param name="info">
+              <para>The <see cref="T:System.Runtime.Serialization.SerializationInfo"/>.</para>
+              <para>This object stores all the required information for serializing/deserializing the delegate.</para>
+            </param>
+            <param name="context">
+              The <see cref="T:System.Runtime.Serialization.StreamingContext"/> for this serialization.
+            </param>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+        </member>
+        <member name="T:WebApplications.Utilities.Serialization.DelegateSerializer.AnonymousClassWrapper">
+            <summary>
+              A wrapper class used internally for serializing anonymous delegates.
+            </summary>
+        </member>
+        <member name="F:WebApplications.Utilities.Serialization.DelegateSerializer.AnonymousClassWrapper.ClassTypeName">
+            <summary>
+            The class type info name. Note: the space at the start is to prevent conflicts with field names.
+            </summary>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.DelegateSerializer.AnonymousClassWrapper.#ctor(System.Type,System.Object)">
+            <summary>
+              Initializes a new instance of the <see cref="T:WebApplications.Utilities.Serialization.DelegateSerializer.AnonymousClassWrapper"/> class.
+            </summary>
+            <param name="bclass">The declaring type.</param>
+            <param name="bobject">The target object instance.</param>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.DelegateSerializer.AnonymousClassWrapper.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+              Initializes a new instance of the <see cref="T:WebApplications.Utilities.Serialization.DelegateSerializer.AnonymousClassWrapper"/> class.
+            </summary>
+            <param name="info">
+              <para>The <see cref="T:System.Runtime.Serialization.SerializationInfo"/>.</para>
+              <para>This object stores all the required information for serializing/deserializing the delegate.</para>
+            </param>
+            <param name="context">
+              The <see cref="T:System.Runtime.Serialization.StreamingContext"/> for this serialization.
+            </param>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.DelegateSerializer.AnonymousClassWrapper.System#Runtime#Serialization#ISerializable#GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+              Populates the provided <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with the data needed
+              to serialize the object.
+            </summary>
+            <param name="info">
+              <para>The <see cref="T:System.Runtime.Serialization.SerializationInfo"/>.</para>
+              <para>This object stores all the required information for serializing/deserializing the delegate.</para>
+            </param>
+            <param name="context">
+              The <see cref="T:System.Runtime.Serialization.StreamingContext"/> for this serialization.
+            </param>
+            <exception cref="T:System.Security.SecurityException">
+              The caller does not have the required permission.
+            </exception>
+        </member>
+        <member name="T:WebApplications.Utilities.Serialization.ExtendedSerializationBinder">
+            <summary>
+              Extends serialization binder to improve performance and to also allow custom type mappings to be added easily
+              using <see cref="M:WebApplications.Utilities.Serialization.ExtendedSerializationBinder.MapType(System.String,System.String,System.Type)"/>.
+              Also simplifies type and assembly names making binding across multiple versions far more reliable.
+              (Includes fix for simplification of generic type names).
+            </summary>
+        </member>
+        <member name="F:WebApplications.Utilities.Serialization.ExtendedSerializationBinder.Default">
+            <summary>
+              The default extended serialization binder.
+            </summary>
+        </member>
+        <member name="F:WebApplications.Utilities.Serialization.ExtendedSerializationBinder._typeMap">
+            <summary>
+              Maps old types to new types.
+            </summary>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.ExtendedSerializationBinder.#ctor">
+            <summary>
+              Initializes a new instance of the <see cref="T:System.Runtime.Serialization.SerializationBinder"/> class.
+            </summary>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.ExtendedSerializationBinder.BindToType(System.String,System.String)">
+            <summary>
+              Overrides the default binder, firstly by using a cache of <see cref="T:System.Type"/>s based on the assembly name and type name,
+              speeding up type binding, but also allowing easy overrides using
+              <see cref="M:WebApplications.Utilities.Serialization.ExtendedSerializationBinder.MapType(System.String,System.String,System.Type)"/>.
+            </summary>
+            <param name="assemblyName">
+              Specifies the <see cref="T:System.Reflection.Assembly"/> name of the serialized object.
+            </param>
+            <param name="typeName">
+              Specifies the <see cref="T:System.Type"/> name of the serialized object.
+            </param>
+            <returns>The mapped type.</returns>
+            <exception cref="T:System.OverflowException">
+              The type map contains the <see cref="F:System.Int32.MaxValue">maximum</see> number of elements.
+            </exception>
+            <seealso cref="T:System.Reflection.Assembly"/>
+            <seealso cref="T:System.Reflection.AssemblyName"/>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.ExtendedSerializationBinder.MapType``1(System.String,System.String)">
+            <summary>
+              Maps an old type to a new type during serialization.
+            </summary>
+            <typeparam name="TNew">The new type.</typeparam>
+            <param name="assemblyName">The assembly name of the old type.</param>
+            <param name="typeName">The name of the old type.</param>
+            <seealso cref="T:System.Reflection.Assembly"/>
+            <seealso cref="T:System.Reflection.AssemblyName"/>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.ExtendedSerializationBinder.MapType(System.String,System.String,System.Type)">
+            <summary>
+              Maps an old type to a new type during serialization.
+            </summary>
+            <param name="assemblyName">The assembly name of the old type.</param>
+            <param name="typeName">The name of the old type.</param>
+            <param name="newType">The new type.</param>
+            <exception cref="T:System.OverflowException">
+              The type map contains the <see cref="F:System.Int32.MaxValue">maximum</see> number of elements.
+            </exception>
+            <seealso cref="T:System.Reflection.Assembly"/>
+            <seealso cref="T:System.Reflection.AssemblyName"/>
+        </member>
+        <member name="T:WebApplications.Utilities.Serialization.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.Resources.Serialize_AddOrUpdateSurrogate_MustBeConcrete">
+            <summary>
+              Looks up a localized string similar to The surrogateType must be a concrete type and not an interface..
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.Resources.Serialize_AddOrUpdateSurrogate_MustImplementISerializationSurrogate">
+            <summary>
+              Looks up a localized string similar to The surrogateType must implement ISerializationSurrogate..
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.Resources.XmlFormatter_GetMemberInfo_TypeNotSerializable">
+            <summary>
+              Looks up a localized string similar to Type is not serializable : {0}..
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.Resources.XmlFormatter_GetMemberValue_MemberCannotBeSerialized">
+            <summary>
+              Looks up a localized string similar to Member cannot be serialized. {0}.
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.Resources.XmlFormatter_InitializeObject_ElementNotFound">
+            <summary>
+              Looks up a localized string similar to Serialization stream contained element not found in type. {0}.
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.Resources.XmlFormatter_InitializeObject_MemberListIsNull">
+            <summary>
+              Looks up a localized string similar to List in object is null. {0}, member {1}.
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.Resources.XmlFormatter_InitializeObject_MoreThanOneMemberFound">
+            <summary>
+              Looks up a localized string similar to More than one member found for tag {0}.
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.Resources.XmlFormatter_Serialize_EmptyStream">
+            <summary>
+              Looks up a localized string similar to Empty serializationStream!.
+            </summary>
+        </member>
+        <member name="T:WebApplications.Utilities.Serialization.Serialize">
+            <summary>
+              A class used to assist in implementing serialization code, adds transparent support for Xml serialization
+              (both <see cref="T:System.Xml.XmlElement"/> and <see cref="T:System.Xml.Linq.XElement"/>). Also adds easy support for mapping old types to new
+              types, using <see cref="M:WebApplications.Utilities.Serialization.ExtendedSerializationBinder.MapType(System.String,System.String,System.Type)"/>.
+            </summary>
+            <remarks>
+              A good article on surrogates can be found at (http://msdn.microsoft.com/en-gb/magazine/cc188950.aspx).
+            </remarks>
+        </member>
+        <member name="F:WebApplications.Utilities.Serialization.Serialize._surrogates">
+            <summary>
+              Holds all of the serialization surrogates.
+            </summary>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.#cctor">
+            <summary>
+              Loads standard serialization surrogates.
+            </summary>
+            <seealso cref="T:WebApplications.Utilities.Serialization.XElementSurrogate"/>
+            <seealso cref="T:WebApplications.Utilities.Serialization.XmlElementSurrogate"/>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.Serialize.SurrogateSelector">
+            <summary>
+              Gets the standard <see cref="T:System.Runtime.Serialization.SurrogateSelector">surrogate selector</see>,
+              which includes support for additional types. Additional types can be registered to the surrogate
+              selector with <see cref="M:WebApplications.Utilities.Serialization.Serialize.AddOrUpdateSurrogate(System.Type,System.Type)"/>.
+            </summary>
+            <value>
+              A <see cref="T:System.Runtime.Serialization.SurrogateSelector"/> object which contains both the standard surrogates
+              and any additional surrogates added with the
+              <see cref="M:WebApplications.Utilities.Serialization.Serialize.AddOrUpdateSurrogate(System.Type,System.Type)"/> in its list of checked surrogates.
+            </value>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.AddOrUpdateSurrogate``1(System.Type)">
+            <summary>
+              Adds a new serialization surrogate.
+              If the surrogate already exists then it is instead updated.
+            </summary>
+            <typeparam name="TInput">The type of the input.</typeparam>
+            <param name="surrogateType">
+              The type of the surrogate, which will be used to control the serialization and deserialization
+              for objects of type <typeparamref name="TInput"/>.
+            </param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+              <para><paramref name="surrogateType"/> was not a concrete type.</para>
+              <para>-or-</para>
+              <para><paramref name="surrogateType"/> must implement
+              <see cref="T:System.Runtime.Serialization.ISerializationSurrogate"/>.</para>
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.AddOrUpdateSurrogate``2">
+            <summary>
+              Adds a new serialization surrogate.
+              If the surrogate already exists then it is instead updated.
+            </summary>
+            <typeparam name="TInput">The type of the input.</typeparam>
+            <typeparam name="TSurrogate">
+              The type of the surrogate to call when serializing/deserializing objects of type <typeparamref name="TInput"/>.
+            </typeparam>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.AddOrUpdateSurrogate(System.Type,System.Type)">
+            <summary>
+              Adds a new serialization surrogate.
+              If the surrogate already exists then it is instead updated.
+            </summary>
+            <param name="inputType">The type of the input.</param>
+            <param name="surrogateType">
+              The type of the surrogate to call when serializing/deserializing objects of type <paramref name="inputType"/>.
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+              <para><paramref name="inputType"/> is a <see langword="null"/>.</para>
+              <para>-or-</para>
+              <para><paramref name="surrogateType"/> is a <see langword="null"/>.</para>
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+              <para><paramref name="surrogateType"/> was not a concrete type.</para>
+              <para>-or-</para>
+              <para><paramref name="surrogateType"/> must implement
+              <see cref="T:System.Runtime.Serialization.ISerializationSurrogate"/>.</para>
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.MapType``1(System.String,System.String)">
+            <summary>
+              Maps an old type to a new type during serialization.
+            </summary>
+            <typeparam name="TNew">The new type.</typeparam>
+            <param name="assemblyName">The name of the assembly.</param>
+            <param name="typeName">The name of the type.</param>
+            <exception cref="T:System.OverflowException">
+              The type map contains the <see cref="F:System.Int32.MaxValue">maximum</see> number of elements.
+            </exception>
+            <seealso cref="T:System.Reflection.Assembly"/>
+            <seealso cref="T:System.Reflection.AssemblyName"/>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.MapType(System.String,System.String,System.Type)">
+            <summary>
+              Maps an old type to a new type during serialization.
+            </summary>
+            <param name="assemblyName">The assembly name of the old type.</param>
+            <param name="typeName">The name of the old type.</param>
+            <param name="newType">The new type.</param>
+            <exception cref="T:System.OverflowException">
+              The type map contains the <see cref="F:System.Int32.MaxValue">maximum</see> number of elements.
+            </exception>
+            <seealso cref="T:System.Reflection.Assembly"/>
+            <seealso cref="T:System.Reflection.AssemblyName"/>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.GetFormatter(System.Object,System.Runtime.Serialization.StreamingContextStates)">
+            <summary>
+              Returns an extended <see cref="T:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter">binary formatter</see>
+              (can serialize XML correctly).
+            </summary>
+            <param name="context">The serialization context.</param>
+            <param name="contextState">The state of the serialization context.</param>
+            <returns>
+              A <see cref="T:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter">binary formatter</see> for serialization.
+            </returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.GetSoapFormatter(System.Object,System.Runtime.Serialization.StreamingContextStates)">
+            <summary>
+              Returns an extended <see cref="T:System.Runtime.Serialization.Formatters.Soap.SoapFormatter">SOAP formatter</see>
+              (can serialize XML correctly).
+            </summary>
+            <param name="context">The serialization context.</param>
+            <param name="contextState">The state of the serialization context.</param>
+            <returns>
+              A <see cref="T:System.Runtime.Serialization.Formatters.Soap.SoapFormatter">SOAP formatter</see> for serialization.
+            </returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.GetXmlFormatter(System.Object,System.Runtime.Serialization.StreamingContextStates)">
+            <summary>
+            Returns an extended <see cref="T:WebApplications.Utilities.Serialization.XmlFormatter">XML formatter</see>.
+            </summary>
+            <param name="context">The serialization context.</param>
+            <param name="contextState">The state of the serialization context.</param>
+            <returns>A <see cref="T:WebApplications.Utilities.Serialization.XmlFormatter">XML formatter</see>.</returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.SerializeToString(System.Object,System.Object,System.Runtime.Serialization.StreamingContextStates)">
+            <summary>
+              Serializes the specified object tree to base64 encoded <see cref="T:System.String"/>.
+            </summary>
+            <param name="obj">The object tree to serialize.</param>
+            <param name="context">The serialization context.</param>
+            <param name="contextState">The state of the serialization context.</param>
+            <returns><paramref name="obj"/> serialized to a <see cref="T:System.String"/>.</returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.SerializeToString(System.Object,System.Runtime.Serialization.IFormatter)">
+            <summary>
+              Serializes object tree to base64 encoded <see cref="T:System.String"/>.
+            </summary>
+            <param name="obj">The object tree to serialize.</param>
+            <param name="formatter">The formatter for the serialized object.</param>
+            <returns><paramref name="obj"/> serialized to a <see cref="T:System.String"/>.</returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.SerializeToString``1(System.Collections.Generic.IEnumerable{``0},System.Object,System.Runtime.Serialization.StreamingContextStates)">
+            <summary>
+              Serializes object tree to base64 encoded <see cref="T:System.String"/>.
+            </summary>
+            <typeparam name="T">The type of the objects in the enumeration.</typeparam>
+            <param name="enumerable">The enumerable to serialize.</param>
+            <param name="context">The serialization context.</param>
+            <param name="contextState">The state of the serialization context.</param>
+            <returns>
+              <paramref name="enumerable"/> serialized to a <see cref="T:System.String"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="enumerable"/> is a <see langword="null"/>
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.SerializeToString``1(System.Collections.Generic.IEnumerable{``0},System.Runtime.Serialization.IFormatter)">
+            <summary>
+            Serializes object tree to base64 encoded <see cref="T:System.String"/>.
+            </summary>
+            <typeparam name="T">The type of the objects in the enumeration.</typeparam>
+            <param name="enumerable">The enumerable to serialize.</param>
+            <param name="formatter">The formatter for the serialized object.</param>
+            <returns>
+              <paramref name="enumerable"/> serialized to a <see cref="T:System.String"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="enumerable"/> is a <see langword="null"/>
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.SerializeToStringBuilder(System.Object,System.Runtime.Serialization.IFormatter)">
+            <summary>
+              Serializes object tree to base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </summary>
+            <param name="obj">The object tree to serialize.</param>
+            <param name="formatter">The formatter for the serialized object.</param>
+            <returns>
+              Base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.SerializeToStringBuilder(System.Object,System.Object,System.Runtime.Serialization.StreamingContextStates)">
+            <summary>
+              Serializes object tree to base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </summary>
+            <param name="obj">The object tree to serialize.</param>
+            <param name="context">The serialization context.</param>
+            <param name="contextState">The state of the serialization context.</param>
+            <returns>
+              Base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.SerializeToStringBuilder``1(System.Collections.Generic.IEnumerable{``0},System.Runtime.Serialization.IFormatter)">
+            <summary>
+              Serializes object tree to base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </summary>
+            <typeparam name="T">The type of the objects in the enumeration.</typeparam>
+            <param name="enumerable">The enumerable to serialize.</param>
+            <param name="formatter">The formatter for the serialized object.</param>
+            <returns>
+              Base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="enumerable"/> is a <see langword="null"/>
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.SerializeToStringBuilder``1(System.Collections.Generic.IEnumerable{``0},System.Object,System.Runtime.Serialization.StreamingContextStates)">
+            <summary>
+              Serializes object tree to base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </summary>
+            <typeparam name="T">The type of the objects in the enumeration.</typeparam>
+            <param name="enumerable">The enumerable to serialize.</param>
+            <param name="context">The serialization context.</param>
+            <param name="contextState">The serialization context state.</param>
+            <returns>
+              Base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="enumerable"/> is a <see langword="null"/>
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.AppendSerialization(System.Text.StringBuilder,System.Object,System.Object,System.Runtime.Serialization.StreamingContextStates)">
+            <summary>
+              Serializes object tree to base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </summary>
+            <param name="stringBuilder">The string builder.</param>
+            <param name="obj">The object tree to serialize.</param>
+            <param name="context">The serialization context.</param>
+            <param name="contextState">The serialization context state.</param>
+            <returns>
+              Base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.AppendSerialization``1(System.Text.StringBuilder,System.Collections.Generic.IEnumerable{``0},System.Object,System.Runtime.Serialization.StreamingContextStates)">
+            <summary>
+              Serializes object tree to base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </summary>
+            <typeparam name="T">The type of the objects in the enumeration.</typeparam>
+            <param name="stringBuilder">The string builder.</param>
+            <param name="enumerable">The enumerable to serialize.</param>
+            <param name="context">The serialization context.</param>
+            <param name="contextState">The serialization context state.</param>
+            <returns>
+              Base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="enumerable"/> is a <see langword="null"/>
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.AppendSerialization``1(System.Text.StringBuilder,System.Collections.Generic.IEnumerable{``0},System.Runtime.Serialization.IFormatter)">
+            <summary>
+              Serializes object tree to base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </summary>
+            <typeparam name="T">The type of the objects in the enumeration.</typeparam>
+            <param name="stringBuilder">The string builder.</param>
+            <param name="enumerable">The enumerable to serialize.</param>
+            <param name="formatter">The formatter for the serialized object.</param>
+            <returns>
+              Base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="enumerable"/> is a <see langword="null"/>
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.AppendSerialization(System.Text.StringBuilder,System.Object,System.Runtime.Serialization.IFormatter)">
+            <summary>
+              Serializes object tree to base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </summary>
+            <param name="stringBuilder">The string builder.</param>
+            <param name="obj">The object tree to serialize.</param>
+            <param name="formatter">The formatter for the serialized object.</param>
+            <returns>
+              Base64 encoded <see cref="T:System.Text.StringBuilder"/>.
+            </returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.SerializeToByteArray``1(System.Collections.Generic.IEnumerable{``0},System.Object,System.Runtime.Serialization.StreamingContextStates)">
+            <summary>
+              Serializes object tree to <see cref="T:System.Byte"/> <see cref="T:System.Array"/>.
+            </summary>
+            <typeparam name="T">The type of the objects in the enumeration.</typeparam>
+            <param name="enumerable">The enumerable to serialize.</param>
+            <param name="context">The serialization context.</param>
+            <param name="contextState">The serialization context state.</param>
+            <returns>
+              <paramref name="enumerable"/> serialized to a <see cref="T:System.Byte"/> <see cref="T:System.Array"/>.
+            </returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.SerializeToByteArray(System.Object,System.Object,System.Runtime.Serialization.StreamingContextStates)">
+            <summary>
+              Serializes object tree to <see cref="T:System.Byte"/> <see cref="T:System.Array"/>.
+            </summary>
+            <param name="obj">The object tree to serialize.</param>
+            <param name="context">The serialization context.</param>
+            <param name="contextState">The serialization context state.</param>
+            <returns>
+              <paramref name="obj"/> serialized to a <see cref="T:System.Byte" /> <see cref="T:System.Array"/>.
+            </returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.SerializeToByteArray``1(System.Collections.Generic.IEnumerable{``0},System.Runtime.Serialization.IFormatter)">
+            <summary>
+              Serializes object tree to <see cref="T:System.Byte"/> <see cref="T:System.Array"/>.
+            </summary>
+            <typeparam name="T">The type of the objects in the enumeration.</typeparam>
+            <param name="enumerable">The enumerable to serialize.</param>
+            <param name="formatter">The formatter for the serialized object.</param>
+            <returns>
+              <paramref name="enumerable"/> serialized to a <see cref="T:System.Byte"/> <see cref="T:System.Array"/>.
+            </returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.SerializeToByteArray(System.Object,System.Runtime.Serialization.IFormatter)">
+            <summary>
+              Serializes object tree to <see cref="T:System.Byte"/> <see cref="T:System.Array"/>.
+            </summary>
+            <param name="obj">The object tree to serialize.</param>
+            <param name="formatter">The formatter for the serialized object.</param>
+            <returns>
+              <paramref name="obj"/> serialized to a <see cref="T:System.Byte"/> <see cref="T:System.Array"/>.
+            </returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.Deserialize``1(System.String,System.Object,System.Runtime.Serialization.StreamingContextStates)">
+            <summary>
+              Deserializes the data to an object tree.
+            </summary>
+            <typeparam name="T">The type of the deserialized objects.</typeparam>
+            <param name="data">The data to deserialize.</param>
+            <param name="context">The de-serialization context.</param>
+            <param name="contextState">The de-serialization context state.</param>
+            <returns>The deserialized object tree of type <typeparamref name="T"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="data"/> is <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.FormatException">
+              <para>The length of <paramref name="data"/> is not zero or a multiple of 4 (ignoring whitespace).</para>
+              <para>-or-</para>
+              <para>The format of the <paramref name="data"/> is invalid, contains either a non-base-64 character,
+              more than two padding characters, or a non-white space-character among the padding characters.</para>
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.Deserialize``1(System.String,System.Runtime.Serialization.IFormatter)">
+            <summary>
+              Deserializes the data to an object tree.
+            </summary>
+            <typeparam name="T">The type of the deserialized objects.</typeparam>
+            <param name="data">The data to deserialize.</param>
+            <param name="formatter">The formatter.</param>
+            <returns>The deserialized object tree of type <typeparamref name="T"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">
+              <paramref name="data"/> is <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.FormatException">
+              <para>The length of <paramref name="data"/> is not zero or a multiple of 4 (ignoring whitespace).</para>
+              <para>-or-</para>
+              <para>The format of the <paramref name="data"/> is invalid, contains either a non-base-64 character,
+              more than two padding characters, or a non-white space-character among the padding characters.</para>
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.Deserialize``1(System.Byte[],System.Object,System.Runtime.Serialization.StreamingContextStates)">
+            <summary>
+              Deserializes the data to an object tree.
+            </summary>
+            <typeparam name="T">The type of the deserialized objects.</typeparam>
+            <param name="data">The data to deserialize.</param>
+            <param name="context">The de-serialization context.</param>
+            <param name="contextState">The de-serialization context state.</param>
+            <returns>The deserialized object tree of type <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.Deserialize``1(System.Byte[],System.Runtime.Serialization.IFormatter)">
+            <summary>
+              Deserializes the data to an object tree.
+            </summary>
+            <typeparam name="T">The type of the deserialized object.</typeparam>
+            <param name="data">The data to deserialize.</param>
+            <param name="formatter">The formatter.</param>
+            <returns>The deserialized object tree of type <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.Write(System.IO.Stream,System.Byte[],System.Int64,System.Int64)">
+            <summary>
+            Writes the specified buffer to the stream (with 64-bit buffer support).
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="buffer">The buffer.</param>
+            <param name="offset">The offset.</param>
+            <param name="count">The count.</param>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.Read(System.IO.Stream,System.Byte[],System.Int64,System.Int64)">
+            <summary>
+            Read the specified buffer to the stream (with 64-bit buffer support).
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="buffer">The buffer.</param>
+            <param name="offset">The offset.</param>
+            <param name="count">The count.</param>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.WriteBits(System.IO.Stream,System.Collections.Generic.IReadOnlyCollection{System.Boolean})">
+            <summary>
+            Writes the <paramref name="bits" /> to the stream.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="bits">The flags.</param>
+            <returns>A byte array.</returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.WriteBits(System.Collections.Generic.IReadOnlyCollection{System.Boolean})">
+            <summary>
+            Writes the <paramref name="bits" /> to a byte array.
+            </summary>
+            <param name="bits">The flags.</param>
+            <returns>A byte array.</returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.ReadBits(System.IO.Stream,System.Int32)">
+            <summary>
+            Reads the bits as booleans from the <paramref name="stream" />.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="length">The number of bits to read.</param>
+            <returns>An array of boolean flags.</returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.Serialize.ReadBits(System.Collections.Generic.IReadOnlyCollection{System.Byte},System.Int32)">
+            <summary>
+            Reads the bits as booleans from the <paramref name="buffer" />.
+            </summary>
+            <param name="buffer">The buffer.</param>
+            <param name="length">The number of bits to read.</param>
+            <returns>An array of boolean flags.</returns>
+        </member>
+        <member name="T:WebApplications.Utilities.Serialization.XElementSurrogate">
+            <summary>
+              Serialization surrogate used to serialize/deserialize <see cref="T:System.Xml.Linq.XElement"/>s.
+            </summary>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XElementSurrogate.System#Runtime#Serialization#ISerializationSurrogate#GetObjectData(System.Object,System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+              Populates the provided <see cref="T:System.Runtime.Serialization.SerializationInfo"/>
+              with the data needed to serialize the object.
+            </summary>
+            <param name="obj">The object to serialize.</param>
+            <param name="info">
+              <para>The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate with data.</para>
+              <para>This object stores all the required information for serializing/deserializing the object.</para>
+            </param>
+            <param name="context">
+              The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>) for this serialization.
+            </param>
+            <exception cref="T:System.Security.SecurityException">
+              The caller does not have the required permission.
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XElementSurrogate.System#Runtime#Serialization#ISerializationSurrogate#SetObjectData(System.Object,System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext,System.Runtime.Serialization.ISurrogateSelector)">
+            <summary>
+              Populates the object using the information in the <see cref="T:System.Runtime.Serialization.SerializationInfo"/>.
+            </summary>
+            <param name="obj">The object to populate.</param>
+            <param name="info">
+              <para>The information to populate the object.</para>
+              <para>This object stores all the required information for serializing/deserializing the object.</para>
+            </param>
+            <param name="context">
+              The source from which the object is deserialized (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>).
+            </param>
+            <param name="selector">The surrogate selector where the search for a compatible surrogate begins.</param>
+            <returns>
+              The populated deserialized object.
+              If the serialization info cannot be found then a <see langword="null"/> is returned.
+            </returns>
+            <exception cref="T:System.Security.SecurityException">
+              The caller does not have the required permission.
+            </exception>
+        </member>
+        <member name="T:WebApplications.Utilities.Serialization.XmlElementSurrogate">
+            <summary>
+              Serialization surrogate used to serialize/deserialize <see cref="T:System.Xml.XmlElement"/>s.
+            </summary>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlElementSurrogate.System#Runtime#Serialization#ISerializationSurrogate#GetObjectData(System.Object,System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+              Populates the provided <see cref="T:System.Runtime.Serialization.SerializationInfo"/>
+              with the data needed to serialize the object.
+            </summary>
+            <param name="obj">The object to serialize.</param>
+            <param name="info">
+              <para>The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate with data.</para>
+              <para>This object stores all the required information for serializing/deserializing the object.</para>
+            </param>
+            <param name="context">
+              The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>) for this serialization.
+            </param>
+            <exception cref="T:System.Security.SecurityException">
+              The caller does not have the required permission.
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlElementSurrogate.System#Runtime#Serialization#ISerializationSurrogate#SetObjectData(System.Object,System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext,System.Runtime.Serialization.ISurrogateSelector)">
+            <summary>
+              Populates the object using the information in the <see cref="T:System.Runtime.Serialization.SerializationInfo"/>.
+            </summary>
+            <param name="obj">The object to populate using the deserialized data.</param>
+            <param name="info">
+              <para>The information to populate the object.</para>
+              <para>This object stores all the required information for serializing/deserializing the object.</para>
+            </param>
+            <param name="context">
+              The source from which the object is deserialized (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>).
+            </param>
+            <param name="selector">The surrogate selector where the search for a compatible surrogate begins.</param>
+            <returns>
+              The populated deserialized object
+              If the serialization info cannot be found then a <see langword="null"/> is returned.
+            </returns>
+            <exception cref="T:System.Security.SecurityException">
+              The caller does not have the required permission.
+            </exception>
+            <exception cref="T:System.Xml.XmlException">
+              There was a load or parse error in the XML.
+            </exception>
+        </member>
+        <member name="T:WebApplications.Utilities.Serialization.XmlFormatter">
+            <summary>
+              The <see cref="T:WebApplications.Utilities.Serialization.XmlFormatter"/> class implements a custom XML Formatter,
+              which uses the <see cref="T:System.Runtime.Serialization.ISerializable"/> interface.
+              The class implements the <see cref="T:System.Runtime.Serialization.IFormatter"/>
+              interface to serialize and deserialize the object to an XML representation.
+            </summary>
+            <remarks>
+              The class calls the methods of <see cref="T:System.Runtime.Serialization.ISerializable"/>
+              on the object if the object supports this interface. If not, the class will use Reflection
+              to examine the public fields and properties of the object.
+              When adding objects that inherit or implement <see cref="T:System.Collections.IList"/>,
+              <see cref="T:System.Collections.ICollection"/>, the element of the list should be passed
+              as an <see cref="T:System.Array">array</see> to <see cref="T:System.Runtime.Serialization.SerializationInfo"/>.
+            </remarks>
+        </member>
+        <member name="F:WebApplications.Utilities.Serialization.XmlFormatter._binder">
+            <summary>
+              The serialization binder used to map object types to names.
+            </summary>
+        </member>
+        <member name="F:WebApplications.Utilities.Serialization.XmlFormatter._deserializationCallbackList">
+            <summary>
+              Contains a list with objects that implement the
+              <see cref="T:System.Runtime.Serialization.IDeserializationCallback"/> interface.
+            </summary>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.#ctor">
+            <summary>
+              Initializes a new instance of the <see cref="T:WebApplications.Utilities.Serialization.XmlFormatter"/> class. The serialization context is
+              set be a <see cref="T:System.Runtime.Serialization.StreamingContextStates">persisted store</see>.
+            </summary>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.#ctor(System.Runtime.Serialization.ISurrogateSelector,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+              Initializes a new instance of the <see cref="T:WebApplications.Utilities.Serialization.XmlFormatter"/> class.
+            </summary>
+            <param name="surrogateSelector">
+              <para>The surrogate selector.</para>
+              <para>This selects which surrogate to use in the serialization/deserialization process.</para>
+            </param>
+            <param name="streamingContext">The streaming context.</param>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.XmlFormatter.DeserializationCallBackList">
+            <summary>
+              A property which gets the deserialization call back list.
+              An empty list is returned if the deserialization callback list is <see langword="null"/>.
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.XmlFormatter.Binder">
+            <summary>
+              Gets or sets the type binder.
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.XmlFormatter.Context">
+            <summary>
+              Gets or sets the <see cref="T:System.Runtime.Serialization.StreamingContext"/>.
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.XmlFormatter.SurrogateSelector">
+            <summary>
+              Gets or sets the Surrogate Selector.
+            </summary>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.Serialize(System.IO.Stream,System.Object)">
+            <summary>
+              Serializes the specified <see cref="T:System.Object"/> to the provided <see cref="T:System.IO.Stream"/>.
+            </summary>
+            <param name="serializationStream">The stream to serialize to.</param>
+            <param name="objectToSerialize">The object to serialize.</param>
+            <exception cref="T:System.ArgumentException">
+              <paramref name="serializationStream"/> is <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.Deserialize(System.IO.Stream)">
+            <summary>
+              Deserializes an object from the passed stream.
+            </summary>
+            <param name="serializationStream">The stream to deserialize the object from.</param>
+            <returns>The deserialized object.</returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.Serialize(System.Xml.XmlTextWriter,System.Runtime.Serialization.FormatterConverter,System.String,System.Object,System.Type)">
+            <summary>
+              Serializes the <see cref="T:System.Object"/> using the passed <see cref="T:System.Xml.XmlTextWriter"/>.
+            </summary>
+            <param name="writer">The writer to use.</param>
+            <param name="converter">
+              The <see cref="T:System.Runtime.Serialization.FormatterConverter">converter</see> to use when converting simple types.
+            </param>
+            <param name="elementName">The name of the element in the XML.</param>
+            <param name="objectToSerialize">The object to serialize.</param>
+            <param name="objectType">The type of the object to serialize.</param>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.WriteAttributes(System.Xml.XmlTextWriter,System.Type,System.Boolean)">
+            <summary>
+              Writes the Type and includeArrayAttribute attributes to the element
+            </summary>
+            <param name="writer">The XMLTextWriter to write to.</param>
+            <param name="objectType">The type of the object.</param>
+            <param name="includeArrayAttribute">Indicates whether to write the isArray attribute.</param>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.WriteValueElement(System.Xml.XmlTextWriter,WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry)">
+            <summary>
+              Writes a simple element to the writer.
+              The name of the element is the name of the object <see cref="T:System.Type"/>.
+            </summary>
+            <param name="writer">The XMLTextWriter to write to.</param>
+            <param name="entry">
+              The <see cref="T:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry">entry</see> to write to the element.
+            </param>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.WriteValueElement(System.String,System.Xml.XmlTextWriter,WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry)">
+            <summary>
+              Writes a simple element to the writer. 
+            </summary>
+            <param name="tagName">The name of the tag to write.</param>
+            <param name="writer">The <see cref="T:System.Xml.XmlTextWriter">XMLTextWriter</see> to write to.</param>
+            <param name="entry">The entry to write to the element.</param>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.GetMemberInfo(System.Object,System.Type,System.Runtime.Serialization.FormatterConverter)">
+            <summary>
+              Gets all the serializable members of an <see cref="T:System.Object"/> and returns an enumerable collection.
+            </summary>
+            <param name="objectToSerialize">The object to get the members from.</param>
+            <param name="objectToSerializeType">The type of the object.</param>
+            <param name="converter">
+              The <see cref="T:System.Runtime.Serialization.FormatterConverter">converter</see> to use when converting simple types.</param>
+            <returns>
+              An IEnumerable list of <see cref="T:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry"/> entries.
+            </returns>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">
+              <paramref name="objectToSerializeType"/> is not serializable.
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.CanSerialize(System.Reflection.MemberInfo)">
+            <summary>
+              Determines whether the passed member is public, not static, and writable.
+            </summary>
+            <param name="member">The member to investigate.</param>
+            <returns>
+              Returns <see langword="true"/> if public, not static, and writable; otherwise returns <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.GetMemberValue(System.Object,System.Reflection.MemberInfo)">
+            <summary>
+              Gets the value of a member from the provided <see cref="T:System.Object"/>.
+            </summary>
+            <param name="item">The object to get the member from.</param>
+            <param name="member">The member to get the value from.</param>
+            <returns>
+              The value of the member.
+            </returns>
+            <exception cref="T:System.NotSupportedException">
+              The <see cref="T:System.Reflection.MemberTypes">member type</see> cannot be serialized.
+              The type should be a Field or Property.
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.Deserialize(System.IO.Stream,System.Type)">
+            <summary>
+              Deserializes an <see cref="T:System.Object"/> from the given <see cref="T:System.IO.Stream"/> for the given <see cref="T:System.Type"/>.
+            </summary>
+            <param name="serializationStream">The stream to read the object from.</param>
+            <param name="objectType">The type of object to create.</param>
+            <returns>The deserialized object.</returns>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.InitializeObject(System.Xml.XmlTextReader,System.Runtime.Serialization.FormatterConverter,System.Type)">
+            <summary>
+              Reads an <see cref="T:System.Object"/> from the XML and initializes it.
+            </summary>
+            <param name="reader">The XMLTextReader to read from.</param>
+            <param name="converter">
+              The <see cref="T:System.Runtime.Serialization.FormatterConverter">converter</see> used to parse the values from the XML.
+            </param>
+            <param name="objectType">The type of the object to create.</param>
+            <returns>The recreated object.</returns>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">
+              <para>The stream contained an element not found in <paramref name="objectType"/>.</para>
+              <para>-or</para>
+              <para>A List member in the object is a <see langword="null"/>.</para>
+              <para>-or-</para>
+              <para>More than one member was found for an XML tag.</para>
+            </exception>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.PopulateSerializationInfo(System.Xml.XmlTextReader,System.Runtime.Serialization.FormatterConverter,System.Runtime.Serialization.SerializationInfo)">
+            <summary>
+              Populates the serialized members in the <see cref="T:System.Runtime.Serialization.SerializationInfo"/>.
+            </summary>
+            <param name="reader">The XMLReader to read from.</param>
+            <param name="converter">
+              The <see cref="T:System.Runtime.Serialization.FormatterConverter">converter</see> used to parse the values from the XML.
+            </param>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate.</param>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.DetermineValue(System.Xml.XmlTextReader,System.Runtime.Serialization.FormatterConverter,System.Type)">
+            <summary>
+              Determines the value of an object.
+            </summary>
+            <param name="reader">The XMLTextReader the read from.</param>
+            <param name="converter">
+              The <see cref="T:System.Runtime.Serialization.FormatterConverter">converter</see> used to parse the values from the XML.
+            </param>
+            <param name="objectType">The type of the object to create.</param>
+            <returns>The value of the object.</returns>
+        </member>
+        <member name="T:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry">
+            <summary>
+              The <see cref="T:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry"/> mimics the <see cref="T:System.Runtime.Serialization.SerializationEntry"/>
+              class to make it possible to create our own entries. The class acts as a placeholder for a type, it's name and it's value.
+              This class is used in the <see cref="T:WebApplications.Utilities.Serialization.XmlFormatter"/> class to serialize objects.
+            </summary>
+        </member>
+        <member name="F:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry._isList">
+            <summary>
+              Indicates whether the object is a list.
+            </summary>
+        </member>
+        <member name="F:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry._name">
+            <summary>
+              The name of the object.
+            </summary>
+        </member>
+        <member name="F:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry._objectType">
+            <summary>
+              The type of the object.
+            </summary>
+        </member>
+        <member name="F:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry._value">
+            <summary>
+              The value of the object.
+            </summary>
+        </member>
+        <member name="M:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry.#ctor(System.String,System.Type,System.Boolean,System.Object)">
+            <summary>
+              A constructor to create a <see cref="T:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry"/>. 
+            </summary>
+            <param name="name">The name of the object.</param>
+            <param name="objectType">The <see cref="T:System.Type"/> of the object.</param>
+            <param name="isList">Indicates whether the object is a list type.</param>
+            <param name="value">The value of the object.</param>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry.Name">
+            <summary>
+              Gets the name of the object.
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry.ObjectType">
+            <summary>
+              Gets the <see cref="T:System.Type"/> of the object.
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry.Value">
+            <summary>
+              Gets or sets the value contained in the object.
+            </summary>
+        </member>
+        <member name="P:WebApplications.Utilities.Serialization.XmlFormatter.CustomSerializationEntry.IsList">
+            <summary>
+              Gets or sets whether the object is a list type.
+            </summary>
+        </member>
+    </members>
+</doc>

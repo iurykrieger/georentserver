@@ -1,0 +1,12 @@
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Domain\bin\Release\GeoRent.Domain.dll.config
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Domain\bin\Release\GeoRent.Domain.dll
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Domain\bin\Release\GeoRent.Domain.pdb
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Domain\bin\Release\DomainValidation.dll
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Domain\bin\Release\NodaTime.dll
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Domain\bin\Release\WebApplications.Utilities.dll
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Domain\bin\Release\WebApplications.Utilities.Serialization.dll
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Domain\bin\Release\NodaTime.xml
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Domain\bin\Release\WebApplications.Utilities.xml
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Domain\bin\Release\WebApplications.Utilities.Serialization.xml
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Domain\obj\Release\GeoRent.Domain.dll
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Domain\obj\Release\GeoRent.Domain.pdb

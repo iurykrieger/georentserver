@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+  <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  
+    <PropertyGroup>
+      <ResourcesPath Condition="'$(ResourcesPath)'==''">$(MSBuildThisFileDirectory)..\Tools\Resources\</ResourcesPath>
+      <UtilityBuildTasks Condition="'$(UtilityBuildTasks)'==''">$(MSBuildThisFileDirectory)..\Tools\WebApplications.Utilities.BuildTasks.dll</UtilityBuildTasks>
+    </PropertyGroup>
+
+    <UsingTask TaskName="DownloadFile" AssemblyFile="$(UtilityBuildTasks)" />
+    <UsingTask TaskName="DownloadTZDB" AssemblyFile="$(UtilityBuildTasks)" />
+    <UsingTask TaskName="DownloadCurrencies" AssemblyFile="$(UtilityBuildTasks)" />
+
+    <Target Name="CheckUtilityPrerequisites">
+      <!-- Raise and error if we can't find the build tasks -->
+      <Error Text="Failed to find the Utilities Build Tasks ('$(UtilityBuildTasks)')." Condition="'$(UtilityBuildTasks)'!='' AND !Exists('$(UtilityBuildTasks)')" />
+      
+      <!-- Raise an error if we're unable to locate the resources  -->
+      <Error Condition="!Exists('$(ResourcesPath)')" Text="Unable to locate utility resources '$(ResourcesPath)'" />
+    </Target>
+
+    <Target Name="UtilitiesTarget" Condition="'$(BuildingProject)'=='true'" Outputs="@(ResourceFiles)" DependsOnTargets="CheckUtilityPrerequisites">
+
+      <DownloadTZDB TZDBUri="http://nodatime.org/tzdb/latest.txt" Overwrite="true" OutputFolderPath="$(ResourcesPath)" OutputFileName="tzdb.nzd" Condition="'$(DownloadTZDB)'=='true'" />
+
+      <DownloadCurrencies ISO4217Uri="http://www.currency-iso.org/dam/downloads/lists/list_one.xml" OutputFilePath="$(ResourcesPath)iso4217.ccy" Merge="true" Condition="'$(DownloadISO4217)'=='true'" />
+
+      <ItemGroup>
+        <ResourceFiles Include="$(ResourcesPath)\**\*" />
+      </ItemGroup>
+
+      <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(OutputPath)\Resources\%(RecursiveDir)" />
+    </Target>
+
+    <!-- Introduces after Build -->
+    <PropertyGroup>
+      <BuildDependsOn>
+        $(BuildDependsOn); UtilitiesTarget
+      </BuildDependsOn>
+    </PropertyGroup>
+	
+	<!-- Import additional targets -->
+    <Import Project="$(MSBuildThisFileDirectory)..\Tools\ILMerge.targets" Condition="$(DefineConstants.Contains('ILMerge')) AND Exists('$(MSBuildThisFileDirectory)..\Tools\ILMerge.targets')" />
+    <Import Project="$(MSBuildThisFileDirectory)..\Tools\InjectModuleInitializer.targets" Condition="$(DefineConstants.Contains('ModuleInitializer')) AND Exists('$(MSBuildThisFileDirectory)..\Tools\InjectModuleInitializer.targets')" />
+  </Project>

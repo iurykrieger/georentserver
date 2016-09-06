@@ -1,0 +1,14 @@
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\bin\Release\GeoRent.Infra.Data.dll.config
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\bin\Release\GeoRent.Infra.Data.dll
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\bin\Release\GeoRent.Infra.Data.pdb
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\bin\Release\EntityFramework.dll
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\bin\Release\GeoRent.Domain.dll
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\bin\Release\MySql.Data.dll
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\bin\Release\mysql.data.entity.EF6.dll
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\bin\Release\GeoRent.Domain.pdb
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\bin\Release\EntityFramework.xml
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\obj\Release\GeoRent.Infra.Data.csprojResolveAssemblyReference.cache
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\obj\Release\GeoRent.Infra.Data.dll
+C:\Users\ander\Documents\Visual Studio 2015\Projects\georentserver\WebGeo\GeoRent.Infra.Data\obj\Release\GeoRent.Infra.Data.pdb

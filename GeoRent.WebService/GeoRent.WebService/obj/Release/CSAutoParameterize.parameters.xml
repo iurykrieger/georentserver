@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="georentdbEntities-Web.config Connection String" description="georentdbEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/ModelGeoRentDB.csdl|res://*/ModelGeoRentDB.ssdl|res://*/ModelGeoRentDB.msl;provider=MySql.Data.MySqlClient;provider connection string=&quot;User Id=root;Password=1234;Host=localhost;Database=georentdb&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\ander\\documents\\visual\ studio\ 2015\\Projects\\GeoRent\.WebService\\GeoRent\.WebService\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='georentdbEntities']/@connectionString" />
+  </parameter>
+</parameters>

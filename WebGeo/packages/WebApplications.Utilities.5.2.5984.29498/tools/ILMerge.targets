@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <Project DefaultTargets="ILMergeTarget" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!--
+  Creating merges
+  ===============
+  
+  Add the following to the project that you wish to merge:
+  <ItemGroup>
+    <MergeAsm Include="$(OutputPath)Merged\test.dll">
+      <Inputs>$(OutputPath)A.dll;$(OutputPath)B.dll;$(OutputPath)C.dll</Inputs>
+    </MergeAsm>
+  </ItemGroup>
+  
+  The MergAsm itemgroup specifies each merge you wish to perform (multiple are possible), and the target output is
+  specified in the Include attribute.  The Inputs metadata is a semi-colon (';') seperated list of input files.
+  
+  To sign the resulting output, you can specify a signature location using the Snk metadata:
+  
+  <ItemGroup>
+    <MergeAsm Include="$(OutputPath)Merged\test.dll">
+      <Inputs>$(OutputPath)A.dll;$(OutputPath)B.dll;$(OutputPath)C.dll</Inputs>
+      <Snk>$(AssemblyOriginatorKeyFile)</Snk>
+    </MergeAsm>
+  </ItemGroup>
+  
+  The TargetKind metadata can either be Exe or Dll, and is inferred automatically from the output, so is usually
+  ommitted:
+  
+  <ItemGroup>
+    <MergeAsm Include="$(OutputPath)Merged\test.dll">
+      <Inputs>$(OutputPath)A.dll;$(OutputPath)B.dll;$(OutputPath)C.dll</Inputs>
+      <Snk>$(AssemblyOriginatorKeyFile)</Snk>
+      <TargetKind>Dll</TargetKind>
+    </MergeAsm>
+  </ItemGroup>
+
+  For clarity you can obviously use a custom item group to specify the inputs, e.g. as shown in the second merge:
+  <ItemGroup>
+
+    <MergeAsm Include="$(OutputPath)Merged\test.dll">
+      <Inputs>$(OutputPath)A.dll;$(OutputPath)B.dll;$(OutputPath)C.dll</Inputs>
+    </MergeAsm>
+
+    <MergeInputs2 Include='$(OutputPath)D.exe' />
+    <MergeInputs2 Include='$(OutputPath)E.dll' />
+    <MergeInputs2 Include='$(OutputPath)F.dll' />
+    <MergeAsm Include="$(OutputPath)Merged\test2.exe">
+      <Inputs>@(MergeInputs2)</Inputs>
+      <Snk>Test.snk</Snk>
+    </MergeAsm>
+  </ItemGroup>
+  -->
+
+    <!-- Locate build task -->
+    <PropertyGroup Condition="'$(ILMergeBuildTask)'==''">
+      <ILMergeBuildTask>$(MSBuildThisFileDirectory)..\Tools\ILMerge.Build.Task.dll</ILMergeBuildTask>
+    </PropertyGroup>
+
+    <!-- Create task -->
+    <UsingTask TaskName="ILMerge" AssemblyFile="$(ILMergeBuildTask)" />
+
+    <!-- Perform the merges -->
+    <Target Name="ILMergeTarget" AfterTargets="AfterBuild" Condition="'@(MergeAsm)'!=''">
+      <PropertyGroup>
+        <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildThisFileDirectory)..\</SolutionDir>
+      </PropertyGroup>
+
+      <!-- Find the ILMerge tools, look in nuget packages first, then use included version. -->
+      <ItemGroup Condition="!Exists('$(ILMergeTool)')">
+        <ILMergePackage Include="$(SolutionDir)packages\ilmerge.*\tools\ILMerge.exe" />
+      </ItemGroup>
+      <PropertyGroup Condition="!Exists('$(ILMergeTool)') AND '@(ILMergePackage)'!=''">
+        <ILMergeTool>@(ILMergePackage)</ILMergeTool>
+        <ILMergeTool Condition="$(ILMergeTool.Contains(';'))">$(ILMergeTool.Substring(0, $(ILMergeTool.IndexOf(';'))))</ILMergeTool>
+        <ILMergeTool Condition="!Exists('$(ILMergeTool)')">$(MSBuildThisFileDirectory)..\Tools\ILMerge.exe</ILMergeTool>
+      </PropertyGroup>
+
+      <!-- Raise an error if we're unable to locate ILMerge build task -->
+      <Error Condition="!Exists('$(ILMergeBuildTask)')" Text="Unable to locate ILMerge Build Task '$(ILMergeBuildTask)'" />
+      <!-- Raise an error if ILMerge is not found -->
+      <Error Condition="!Exists('$(ILMergeTool)')" Text="Unable to locate ILMerge tool '$(ILMergeTool)'" />
+
+      <!-- Update target kind where not explicitly set. -->
+      <ItemGroup>
+        <MergeAsm Condition="'%(MergeAsm.TargetKind)'=='' AND $([System.Text.RegularExpressions.Regex]::IsMatch('%(MergeAsm.Identity)', '\.[dD]ll$'))">
+          <TargetKind>Dll</TargetKind>
+        </MergeAsm>
+        <MergeAsm Condition="'%(MergeAsm.TargetKind)'=='' AND $([System.Text.RegularExpressions.Regex]::IsMatch('%(MergeAsm.Identity)', '\.[eE]xe$'))">
+          <TargetKind>Exe</TargetKind>
+        </MergeAsm>
+      </ItemGroup>
+
+      <!-- Validate the TargetKind -->
+      <Error Condition="'%(MergeAsm.TargetKind)'==''" Text="The merge output '%(MergeAsm.Identity)' must end in either '.exe' or '.dll', or a specific TargetKind of on of 'Exe', 'Dll' or 'WinExe' must be specified." />
+      <Error Condition="'%(MergeAsm.TargetKind)'!='Exe' AND '%(MergeAsm.TargetKind)'!='Dll' AND '%(MergeAsm.TargetKind)'!='WinExe'" Text="The target kind '%(MergeAsm.TargetKind)' for '%(MergeAsm.Identity)' must be set to either 'Exe', 'Dll' or 'WinExe'." />
+
+      <!-- Raise an error if we can't find a specified signature key -->
+      <Error Condition="'%(MergeAsm.Snk)'!='' AND !Exists('%(MergeAsm.Snk)')" Text="Could not find the '%(MergeAsm.Snk)' signature file for resigning '%(MergeAsm.Identity)', ILMerge cannot be performed." />
+
+      <!-- Create output directories -->
+      <ItemGroup>
+        <MergeAsmDirs Include="@(MergeAsm->DirectoryName()->Distinct())" />
+      </ItemGroup>
+      <MakeDir Directories="%(MergeAsmDirs.Identity)" />
+
+      <!-- Perform merges -->
+      <ILMerge InputAssemblies="%(MergeAsm.Inputs)" 
+               OutputFile="%(MergeAsm.Identity)"
+               SnkFile="%(MergeAsm.Snk)"
+               TargetKind="%(MergeAsm.TargetKind)"
+               ILMergeTool="$(ILMergeTool)"
+               TargetFrameworkVersion="$(TargetFrameworkVersion)"
+               TargetPlatform="$(Platform)"
+                />
+    </Target>
+  </Project>
