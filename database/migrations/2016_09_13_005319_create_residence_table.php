@@ -22,7 +22,7 @@ class CreateResidenceTable extends Migration
             $table->text('description');
             $table->string('address',255);
             $table->text('observation');
-            $table->decimal('price',10,2);
+            $table->decimal('rent',10,2);
             $table->timestamps();
         });
 
