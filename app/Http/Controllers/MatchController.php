@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\City;
 use App\Http\Requests;
+use App\Match;
 use Illuminate\Http\Request;
 
-class CityController extends Controller
-{    
+class MatchController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +15,7 @@ class CityController extends Controller
      */
     public function index()
     {
-        $all = City::all();
+        $all = Match::all();
         return response()->json($all);
     }
 
@@ -27,9 +27,9 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        $city = $request->all();
-        $city = City::create($city);
-        return response()->json($city);
+        $match = $request->all();
+        $match = Match::create($match);
+        return response()->json($match);
     }
 
     /**
@@ -40,7 +40,7 @@ class CityController extends Controller
      */
     public function show($id)
     {
-        $all = City::findOrFail($id);
+        $all = Match::findOrFail($id);
         return response()->json($all);
     }
 
@@ -53,10 +53,10 @@ class CityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $city = City::findOrFail($id);
+        $match = Match::findOrFail($id);
         $input = $request->all();
-        $city->fill($input)->save();
-        return response()->json($city);
+        $match->fill($input)->save();
+        return response()->json($match);
     }
 
     /**
@@ -67,7 +67,7 @@ class CityController extends Controller
      */
     public function destroy($id)
     {
-        $city = City::findOrFail($id);
-        $city->delete();
+        $match = Match::findOrFail($id);
+        $match->delete();
     }
 }

@@ -15,8 +15,8 @@ class CreateLocationTable extends Migration
     {
         Schema::create('location' ,function (Blueprint $table) {
             $table->increments('idLocation');
-            $table->string('latitude', 45);
-            $table->string('longitude', 45);
+            $table->double('latitude', 15,8);
+            $table->double('longitude', 15,8);
             $table->integer('idCity')->unsigned();
             $table->rememberToken();
             $table->timestamps();

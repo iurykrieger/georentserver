@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\City;
 use App\Http\Requests;
+use App\Preference;
 use Illuminate\Http\Request;
 
-class CityController extends Controller
-{    
+class PreferenceController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +15,7 @@ class CityController extends Controller
      */
     public function index()
     {
-        $all = City::all();
+        $all = Preference::all();
         return response()->json($all);
     }
 
@@ -27,9 +27,9 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        $city = $request->all();
-        $city = City::create($city);
-        return response()->json($city);
+        $preference = $request->all();
+        $preference = Preference::create($preference);
+        return response()->json($preference);
     }
 
     /**
@@ -40,7 +40,7 @@ class CityController extends Controller
      */
     public function show($id)
     {
-        $all = City::findOrFail($id);
+        $all = Preference::findOrFail($id);
         return response()->json($all);
     }
 
@@ -53,10 +53,10 @@ class CityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $city = City::findOrFail($id);
+        $preference = Preference::findOrFail($id);
         $input = $request->all();
-        $city->fill($input)->save();
-        return response()->json($city);
+        $preference->fill($input)->save();
+        return response()->json($preference);
     }
 
     /**
@@ -67,7 +67,7 @@ class CityController extends Controller
      */
     public function destroy($id)
     {
-        $city = City::findOrFail($id);
-        $city->delete();
+        $preference = Preference::findOrFail($id);
+        $preference->delete();
     }
 }

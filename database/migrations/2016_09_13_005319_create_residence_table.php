@@ -18,6 +18,11 @@ class CreateResidenceTable extends Migration
             $table->integer('idLocation')->unsigned();
             $table->integer('idUser')->unsigned();
             $table->integer('idPreference')->unsigned();
+            $table->string('title',255);
+            $table->text('description');
+            $table->string('address',255);
+            $table->text('observation');
+            $table->decimal('price',10,2);
             $table->timestamps();
         });
 

@@ -8,12 +8,6 @@ use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
- 
-    public function __construct(){
-        //$this->middleware('auth');
-
-        $this->middleware('guest');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -23,16 +17,6 @@ class LocationController extends Controller
     {
         $all = Location::all();
         return response()->json($all);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-       //     
     }
 
     /**
@@ -61,17 +45,6 @@ class LocationController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -80,7 +53,7 @@ class LocationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $location = City::findOrFail($id);
+        $location = Location::findOrFail($id);
         $input = $request->all();
         $location->fill($input)->save();
         return response()->json($location);

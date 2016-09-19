@@ -20,16 +20,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -37,7 +27,36 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+                'name' => 'required|max:100',
+                'birthDate' => 'required|date'
+                'email' => 'required|email|max:100|unique:user',
+                'phone' => 'required|max:11',
+                'password' => 'required|confirmed|min:6',
+                'credits' => 'required|numeric',
+                'type' => 'required|integer',
+                'distance' => 'required|integer',
+                'idPreference' => 'required|integer',
+                'idCity' => 'required|integer'
+            ]);
+            $user = $request->all();
+            
+            User::create([
+                'name' => $user['name'],
+                'birthDate' => $user['birthDate'],
+                'email' => $user['email'],
+                'phone' => $user['phone'],
+                'password' => bcrypt($user['password']),
+                'credits' => $user['credits'],
+                'type' => $user['type'],
+                'distance' => $user['distance'],
+                'idPreference' => $user['idPreference'],
+                'idCity' => $user['idCity'],
+                'tries' => 0,
+                'active' => true,
+            ]);
+            
+            return response()->json($user);
     }
 
     /**
@@ -48,18 +67,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $all = User::findOrFail($id);
+        return response()->json($all);
     }
 
     /**
@@ -71,7 +80,10 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $input = $request->all();
+        $user->fill($input)->save();
+        return response()->json($User);
     }
 
     /**
@@ -82,6 +94,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\City;
 use App\Http\Requests;
+use App\UserImage;
 use Illuminate\Http\Request;
 
-class CityController extends Controller
-{    
+class UserImageController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +15,7 @@ class CityController extends Controller
      */
     public function index()
     {
-        $all = City::all();
+        $all = UserImage::all();
         return response()->json($all);
     }
 
@@ -27,9 +27,9 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        $city = $request->all();
-        $city = City::create($city);
-        return response()->json($city);
+        $userImage = $request->all();
+        $userImage = UserImage::create($userImage);
+        return response()->json($userImage);
     }
 
     /**
@@ -40,7 +40,7 @@ class CityController extends Controller
      */
     public function show($id)
     {
-        $all = City::findOrFail($id);
+        $all = UserImage::findOrFail($id);
         return response()->json($all);
     }
 
@@ -53,10 +53,10 @@ class CityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $city = City::findOrFail($id);
+        $userImage = UserImage::findOrFail($id);
         $input = $request->all();
-        $city->fill($input)->save();
-        return response()->json($city);
+        $userImage->fill($input)->save();
+        return response()->json($userImage);
     }
 
     /**
@@ -67,7 +67,7 @@ class CityController extends Controller
      */
     public function destroy($id)
     {
-        $city = City::findOrFail($id);
-        $city->delete();
+        $userImage = UserImage::findOrFail($id);
+        $userImage->delete();
     }
 }
