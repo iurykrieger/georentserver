@@ -18,3 +18,21 @@ Route::get('/', function () {
 Route::resource('city', 'CityController');
 
 Route::resource('location', 'LocationController');
+
+Route::resource('residence', 'ResidenceController');
+
+Route::resource('residenceImage', 'ResidenceImageController');
+
+Route::resource('user', 'UserController');
+
+Route::resource('userImage', 'UserImageController');
+
+Route::resource('match', 'MatchController');
+
+Route::resource('message', 'MessageController');
+
+Route::resource('preference', 'PreferenceController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

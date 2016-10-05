@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\City;
 use App\Http\Requests;
 use App\Location;
 use Illuminate\Http\Request;
