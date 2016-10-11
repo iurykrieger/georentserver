@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $all = User::all();
+        $all = User::with('city','preference')->get();
         return response()->json($all);
     }
 
@@ -67,7 +67,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $all = User::findOrFail($id);
+        $all = User::with('city','preference')->findOrFail($id);
         return response()->json($all);
     }
 

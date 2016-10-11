@@ -15,8 +15,8 @@ class MessageSeeder extends Seeder
         for ($i = 0; $i < 50; $i++){
         	$date = Carbon::create(2015, 5, 28, 0, 0, 0);
 	        DB::table('message')->insert([
-		            'from' => rand(1,10),
-					'to' => rand(1,10),
+		            'idFrom' => rand(1,10),
+					'idTo' => rand(1,10),
 					'message' => str_random(200),
 					'dateTime' => $date->format('Y-m-d H:i:s'),
 					'resource' => rand(1,10),

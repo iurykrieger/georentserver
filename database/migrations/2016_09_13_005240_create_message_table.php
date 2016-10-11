@@ -15,8 +15,8 @@ class CreateMessageTable extends Migration
     {
         Schema::create('message', function (Blueprint $table) {
             $table->increments('idMessage')->unsigned();
-            $table->integer('from')->unsigned();
-            $table->integer('to')->unsigned();
+            $table->integer('idFrom')->unsigned();
+            $table->integer('idTo')->unsigned();
             $table->string('message',500);
             $table->timestamp('dateTime');
             $table->integer('resource');
@@ -25,8 +25,8 @@ class CreateMessageTable extends Migration
         });
 
         Schema::table('message', function($table) {
-           $table->foreign('from')->references('idUser')->on('user');
-           $table->foreign('to')->references('idUser')->on('user');
+           $table->foreign('idFrom')->references('idUser')->on('user');
+           $table->foreign('idTo')->references('idUser')->on('user');
         });
     }
 

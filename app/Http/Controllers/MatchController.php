@@ -15,7 +15,7 @@ class MatchController extends Controller
      */
     public function index()
     {
-        $all = Match::all();
+        $all = Match::with('residence','user')->get();
         return response()->json($all);
     }
 
@@ -40,7 +40,7 @@ class MatchController extends Controller
      */
     public function show($id)
     {
-        $all = Match::findOrFail($id);
+        $all = Match::with('residence','user')->findOrFail($id);
         return response()->json($all);
     }
 

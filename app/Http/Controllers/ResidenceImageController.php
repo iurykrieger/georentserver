@@ -15,7 +15,7 @@ class ResidenceImageController extends Controller
      */
     public function index()
     {
-        $all = ResidenceImage::all();
+        $all = ResidenceImage::with('residence')->get();
         return response()->json($all);
     }
 
@@ -40,7 +40,7 @@ class ResidenceImageController extends Controller
      */
     public function show($id)
     {
-        $all = ResidenceImage::findOrFail($id);
+        $all = ResidenceImage::with('residence')->findOrFail($id);
         return response()->json($all);
     }
 

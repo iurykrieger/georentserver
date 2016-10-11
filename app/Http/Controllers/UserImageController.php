@@ -15,7 +15,7 @@ class UserImageController extends Controller
      */
     public function index()
     {
-        $all = UserImage::all();
+        $all = UserImage::with('user')->get();
         return response()->json($all);
     }
 
@@ -40,7 +40,7 @@ class UserImageController extends Controller
      */
     public function show($id)
     {
-        $all = UserImage::findOrFail($id);
+        $all = UserImage::with('user')->findOrFail($id);
         return response()->json($all);
     }
 

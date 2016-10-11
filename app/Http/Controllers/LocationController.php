@@ -16,7 +16,7 @@ class LocationController extends Controller
      */
     public function index()
     {
-        $all = Location::all();
+        $all = Location::with('city')->get();
         return response()->json($all);
     }
 
@@ -41,8 +41,8 @@ class LocationController extends Controller
      */
     public function show($id)
     {
-        $all = Location::findOrFail($id);
-        return response()->json($all);
+        $location = Location::with('city')->findOrFail($id);
+        return response()->json($location);
     }
 
     /**

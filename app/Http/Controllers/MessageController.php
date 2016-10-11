@@ -15,7 +15,7 @@ class MessageController extends Controller
      */
     public function index()
     {
-        $all = Message::all();
+        $all = Message::with('userFrom','userTo')->get();
         return response()->json($all);
     }
 
@@ -40,7 +40,7 @@ class MessageController extends Controller
      */
     public function show($id)
     {
-        $all = Message::findOrFail($id);
+        $all = Message::with('userFrom','userTo')->findOrFail($id);
         return response()->json($all);
     }
 

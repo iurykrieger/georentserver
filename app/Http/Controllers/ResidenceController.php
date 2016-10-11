@@ -15,7 +15,7 @@ class ResidenceController extends Controller
      */
     public function index()
     {
-        $all = Residence::all();
+        $all = Residence::with('location','user','preference')->get();
         return response()->json($all);
     }
 
@@ -40,7 +40,7 @@ class ResidenceController extends Controller
      */
     public function show($id)
     {
-        $all = Residence::findOrFail($id);
+        $all = Residence::with('location','user','preference')->findOrFail($id);
         return response()->json($all);
     }
 

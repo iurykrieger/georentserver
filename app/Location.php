@@ -2,22 +2,23 @@
 
 namespace App;
 
+use App\City;
 use Illuminate\Database\Eloquent\Model;
 
 class Location extends Model 
 {
-    protected $hidden = ['remember_token','created_at','updated_at'];
+    protected $hidden = ['idCity','remember_token','created_at','updated_at'];
     
     protected $primaryKey = "idLocation";
 
     protected $table = 'location';
 
-    protected $fillable = ['latitude','longitude','idCity'];
+    protected $fillable = ['latitude','longitude'];
 
     public $timestamps = false;
 
     public function city()
     {
-        return $this->hasOne('City','foreign_key');
+        return $this->belongsTo('App\City','idCity');
     }  
 }
