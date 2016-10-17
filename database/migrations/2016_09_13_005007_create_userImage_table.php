@@ -18,7 +18,7 @@ class CreateUserImageTable extends Migration
             $table->integer('idUser')->unsigned();
             $table->longText('path');
             $table->integer('resource');
-            $table->integer('order');
+            $table->integer('orderImage');
             $table->timestamps();
         });
 

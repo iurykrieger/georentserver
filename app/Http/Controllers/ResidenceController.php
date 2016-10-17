@@ -20,6 +20,21 @@ class ResidenceController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function limit($id,$qtReg)
+    {
+        $sql = Residence::with('location','user','preference')
+                     ->take($qtReg)
+                     ->skip($id)
+                     ->get();    
+        return response()->json($sql);
+    }
+
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

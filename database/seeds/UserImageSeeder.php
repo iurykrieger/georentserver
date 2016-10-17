@@ -16,7 +16,7 @@ class UserImageSeeder extends Seeder
 		            'idUser' => rand(1,5),
 		            'path' => "C:'\'".str_random(50),
 					'resource' => rand(1,10),
-					'order' => rand(1,10),
+					'orderImage' => rand(1,10),
 		        ]);
 	    }
     }

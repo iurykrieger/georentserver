@@ -16,7 +16,7 @@ class ResidenceImageSeeder extends Seeder
 		            'idResidence' => rand(1,10),
 		            'path' => "C:'\'".str_random(50),
 					'resource' => rand(1,10),
-					'order' => rand(1,10),
+					'orderImage' => rand(1,10),
 		        ]);
 	    }
     }

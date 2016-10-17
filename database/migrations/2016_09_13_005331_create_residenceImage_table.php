@@ -18,7 +18,7 @@ class CreateResidenceImageTable extends Migration
             $table->integer('idResidence')->unsigned();
             $table->longText('path');
             $table->integer('resource');
-            $table->integer('order');
+            $table->integer('orderImage');
             $table->timestamps();
         });
 

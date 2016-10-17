@@ -20,6 +20,33 @@ class ResidenceImageController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function residence($idResidence)
+    {
+        $residence = ResidenceImage::with('residence')
+        ->where('idResidence', '=', $idResidence)
+        ->get();
+        return response()->json($residence);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function residenceTop($idResidence)
+    {
+        $residence = ResidenceImage::with('residence')
+        ->where('idResidence', '=', $idResidence)
+        ->orderBy('orderImage', 'desc')
+        ->first();     
+        return response()->json($residence);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

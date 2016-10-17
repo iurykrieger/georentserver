@@ -33,6 +33,12 @@ Route::resource('message', 'MessageController');
 
 Route::resource('preference', 'PreferenceController');
 
+Route::get('/residence/limit/{id}/{qtReg}','ResidenceController@limit');
+
+Route::get('residenceImage/residence/{idResidence}','ResidenceImageController@residence');
+
+Route::get('residenceImage/residence/{idResidence}/top','ResidenceImageController@residenceTop');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
