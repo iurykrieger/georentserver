@@ -27,8 +27,8 @@ class ResidenceController extends Controller
     public function limit($id,$qtReg)
     {
         $sql = Residence::with('location','user','preference')
-                     ->take($qtReg)
-                     ->skip($id)
+                     ->limit($qtReg)
+                     ->offset($id-1)
                      ->get();    
         return response()->json($sql);
     }

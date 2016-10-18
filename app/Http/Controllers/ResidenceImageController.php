@@ -37,6 +37,37 @@ class ResidenceImageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function topAllResidences()
+    {
+
+        $residence = ResidenceImage::with('residence')
+        ->orderBy('idResidence','asc')
+        ->groupBy('idResidence')->get();     
+        return response()->json($residence);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function topAllResidencesLimit($id,$qtReg)
+    {
+
+        $residence = ResidenceImage::with('residence')
+        ->orderBy('idResidence','asc')
+        ->groupBy('idResidence')
+        ->limit($qtReg)
+        ->offset($id-1)
+        ->get();     
+        return response()->json($residence);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function residenceTop($idResidence)
     {
         $residence = ResidenceImage::with('residence')

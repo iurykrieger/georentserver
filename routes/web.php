@@ -15,6 +15,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/residence/limit/{id}/{qtReg}','ResidenceController@limit');
+
+Route::get('residenceImage/residence/{idResidence}','ResidenceImageController@residence');
+
+Route::get('residenceImage/top','ResidenceImageController@topAllResidences');
+
+Route::get('residenceImage/top/limit/{id}/{qtReg}','ResidenceImageController@topAllResidencesLimit');
+
+Route::get('residenceImage/residence/{idResidence}/top','ResidenceImageController@residenceTop');
+
 Route::resource('city', 'CityController');
 
 Route::resource('location', 'LocationController');
@@ -32,12 +42,6 @@ Route::resource('match', 'MatchController');
 Route::resource('message', 'MessageController');
 
 Route::resource('preference', 'PreferenceController');
-
-Route::get('/residence/limit/{id}/{qtReg}','ResidenceController@limit');
-
-Route::get('residenceImage/residence/{idResidence}','ResidenceImageController@residence');
-
-Route::get('residenceImage/residence/{idResidence}/top','ResidenceImageController@residenceTop');
 
 Auth::routes();
 
