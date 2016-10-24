@@ -30,4 +30,12 @@ class Residence extends Model
     {
         return $this->belongsTo('App\User','idUser');
     } 
+    //varios para 1 no inverso =D
+    public function residenceImages()
+    {
+        return $this->hasManyThrough('App\residenceImage','App\residence',
+                                     'idResidence','idResidence', 'idResidence');
+    } 
+
+    
 }

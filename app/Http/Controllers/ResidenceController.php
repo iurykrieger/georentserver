@@ -33,6 +33,34 @@ class ResidenceController extends Controller
         return response()->json($sql);
     }
 
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function residenceImages($idResidence)
+    {
+        $residenceImage = Residence::with('residenceImages')
+            ->where('idResidence', '=', $idResidence)
+            ->get();    
+        return response()->json($residenceImage);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    //IMAGEM PRINCIPAL DA RESIDENCIA
+    public function top($idResidence)
+    {
+        $residenceImage = Residence::with(['residenceImages' => function($query){
+            $query->orderBy('orderImage','desc')->first();
+        }])
+            ->where('idResidence', '=', $idResidence)
+            ->first(); 
+        return response()->json($residenceImage);
+    }
 
     /**
      * Store a newly created resource in storage.

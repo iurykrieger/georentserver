@@ -25,6 +25,10 @@ Route::get('residenceImage/top/limit/{id}/{qtReg}','ResidenceImageController@top
 
 Route::get('residenceImage/residence/{idResidence}/top','ResidenceImageController@residenceTop');
 
+Route::get('residence/{idResidence}/residenceImage','ResidenceController@residenceImages');
+
+Route::get('residence/{idResidence}/residenceImage/top','ResidenceController@top');
+
 Route::resource('city', 'CityController');
 
 Route::resource('location', 'LocationController');
