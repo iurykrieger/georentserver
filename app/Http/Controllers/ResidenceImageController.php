@@ -41,7 +41,7 @@ class ResidenceImageController extends Controller
     {
 
         $residence = ResidenceImage::with('residence')
-        ->orderBy('idResidence','asc')
+        ->orderBy('orderImage','desc')
         ->groupBy('idResidence')->get();     
         return response()->json($residence);
     }

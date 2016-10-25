@@ -46,6 +46,23 @@ class ResidenceController extends Controller
         return response()->json($residenceImage);
     }
 
+       /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function eager($idResidence)
+    {
+        $eager = Residence::with(['matches' => function($query){
+            $query->orderBy('dateTime','desc');
+        },                        'residenceImages' => function($query2){
+            $query2->orderBy('orderImage','desc');                        
+        },
+                                  'location.city'])
+        ->findOrFail($idResidence);
+        return response()->json($eager);
+    }
+
     /**
      * Display a listing of the resource.
      *
