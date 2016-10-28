@@ -87,9 +87,21 @@ class ResidenceController extends Controller
      */
     public function store(Request $request)
     {
-        $residence = $request->all();
-        $residence = Residence::create($residence);
-        return response()->json($residence);
+        $this->validate($request, [
+                'idLocation' => 'required|integer',
+                'idUser' => 'required|integer',
+                'idPreference' => 'required|integer',
+                'title' => 'required|max:100',
+                'description' => 'required|max:100',
+                'address' => 'required|max:100',
+                'observation' => 'required|max:100',
+                'rent' => 'required|numeric'
+            ]);
+            $residence = $request->all();
+            
+            Residence::create($residence);
+
+            return "Residencia cadastrada com sucesso!!";
     }
 
     /**

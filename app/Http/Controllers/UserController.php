@@ -30,15 +30,16 @@ class UserController extends Controller
         $this->validate($request, [
                 'name' => 'required|max:100',
                 'birthDate' => 'required|date',
-                'email' => 'required|email|max:100|unique:user',
+                'email' => 'required|max:100',
                 'phone' => 'required|max:11',
-                'password' => 'required|confirmed|min:6',
+                'password' => 'required|min:6',
                 'credits' => 'required|numeric',
                 'type' => 'required|integer',
                 'distance' => 'required|integer',
                 'idPreference' => 'required|integer',
                 'idCity' => 'required|integer'
             ]);
+
             $user = $request->all();
             
             User::create([

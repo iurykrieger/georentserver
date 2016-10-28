@@ -12,7 +12,7 @@ class User extends Model
 
     protected $table = 'user';
 
-    protected $fillable = ['name','birthDate','email','phone','password','credits','type','distance'];
+    protected $fillable = ['password','idPreference','idCity','name','birthDate','email','phone','password','credits','type','distance'];
 
     public $timestamps = false;
 

@@ -12,7 +12,7 @@ class Residence extends Model
 
     protected $table = 'residence';
 
-    protected $fillable = ['title','description','address','observation','price'];
+    protected $fillable = ['idUser','idPreference','idLocation','title','description','address','observation','rent'];
 
     public $timestamps = false;
 
