@@ -12,7 +12,7 @@ class UserImage extends Model
 
     protected $table = 'userImage';
 
-    protected $fillable = ['path','resource','orderImage'];
+    protected $fillable = ['idUser','path','resource','orderImage'];
 
     public $timestamps = false;
 

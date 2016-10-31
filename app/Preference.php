@@ -12,7 +12,7 @@ class Preference extends Model
 
     protected $table = 'preference';
 
-    protected $fillable = ['sponsor','room','bathroom','vacancy','laundry','income','condominuim','child','stay','pet'];
+    protected $fillable = ['sponsor','room','bathroom','vacancy','laundry','income','condominium','child','stay','pet'];
 
     public $timestamps = false;
 }

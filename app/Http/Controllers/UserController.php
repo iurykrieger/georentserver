@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Preference;
 use App\User;
+use App\UserImage;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -36,13 +38,18 @@ class UserController extends Controller
                 'credits' => 'required|numeric',
                 'type' => 'required|integer',
                 'distance' => 'required|integer',
-                'idPreference' => 'required|integer',
                 'idCity' => 'required|integer'
             ]);
 
             $user = $request->all();
-            
-            User::create([
+
+            //Chama a preference, criar e atribui abaixo a criação junto com o usuário.
+            $preference = $request->preference;
+            $preference = Preference::create($preference);
+
+            //Cria o usuário.
+            //pegar a id do usuário inserido para inserir as imagens.
+            $user = User::create([
                 'name' => $user['name'],
                 'birthDate' => $user['birthDate'],
                 'email' => $user['email'],
@@ -51,11 +58,24 @@ class UserController extends Controller
                 'credits' => $user['credits'],
                 'type' => $user['type'],
                 'distance' => $user['distance'],
-                'idPreference' => $user['idPreference'],
+                'idPreference' => $preference['idPreference'],
                 'idCity' => $user['idCity'],
-                'tries' => 0,
+                'tries' => 0,   
                 'active' => true,
             ]);
+
+            //Adiciona as imagens do usuario.
+            $userImages = $request->userImages;
+            foreach($userImages as $userImage){
+                UserImage::create([
+                    'path' => $userImage['path'],
+                    'resource' => $userImage['resource'],
+                    'orderImage' => $userImage['orderImage'],
+                    'idUser' => $user['idUser'],
+                    'tries' => 0,
+                    'active' => true,
+                    ]);   
+            }
             
             return response()->json($user);
     }
