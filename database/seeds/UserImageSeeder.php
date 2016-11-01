@@ -11,13 +11,29 @@ class UserImageSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 50; $i++){
+        for ($i = 1; $i <= 50; $i++){
 	        DB::table('userImage')->insert([
-		            'idUser' => rand(1,5),
+                    'idUser' => $i,
 		            'path' => "C:'\'".str_random(50),
 					'resource' => rand(1,10),
 					'orderImage' => rand(1,10),
 		        ]);
 	    }
+        for ($i = 1; $i <= 50; $i++){
+            DB::table('userImage')->insert([
+                    'idUser' => $i,
+                    'path' => "C:'\'".str_random(50),
+                    'resource' => rand(1,10),
+                    'orderImage' => rand(1,10),
+                ]);
+        }
+        for ($i = 1; $i <= 50; $i++){
+            DB::table('userImage')->insert([
+                    'idUser' => $i,
+                    'path' => "C:'\'".str_random(50),
+                    'resource' => rand(1,10),
+                    'orderImage' => rand(1,10),
+                ]);
+        }
     }
 }

@@ -58,7 +58,10 @@ class ResidenceController extends Controller
         },                        'residenceImages' => function($query2){
             $query2->orderBy('orderImage','desc');                        
         },
-                                  'location.city','preference','user'])
+                                  'location.city',
+                                  'preference',
+                                  'user',
+                                  'matches.user'])
         ->findOrFail($idResidence);
         return response()->json($eager);
     }

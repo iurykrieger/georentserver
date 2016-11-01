@@ -18,6 +18,7 @@ class CreateResidenceTable extends Migration
             $table->integer('idLocation')->unsigned();
             $table->integer('idUser')->unsigned();
             $table->integer('idPreference')->unsigned();
+            $table->integer('profileImage')->unsigned()->nullable()->default(null);
             $table->string('title',255);
             $table->text('description');
             $table->string('address',255);

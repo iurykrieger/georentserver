@@ -25,6 +25,7 @@ class CreateUserTable extends Migration
             $table->integer('distance');
             $table->integer('idPreference')->unsigned();
             $table->integer('idCity')->unsigned();
+            $table->integer('profileImage')->unsigned()->nullable()->default(null);
             $table->timestamps();
         });
 

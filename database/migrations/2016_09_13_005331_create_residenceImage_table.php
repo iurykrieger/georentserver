@@ -25,6 +25,11 @@ class CreateResidenceImageTable extends Migration
         Schema::table('residenceImage', function($table) {
            $table->foreign('idResidence')->references('idResidence')->on('residence');
         });
+
+        //foi feito pois na ordem a residenceImage é criada depois da residencia, logo não tem como referenciar uma chave que não existe, este foi o unico modo.
+        Schema::table('residence', function($table) {
+           $table->foreign('profileImage')->references('idResidenceImage')->on('residenceImage');
+        });
     }
 
     /**
