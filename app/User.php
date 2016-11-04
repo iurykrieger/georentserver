@@ -26,4 +26,11 @@ class User extends Model
         return $this->belongsTo('App\Preference','idPreference');
     } 
 
+    //varios para 1 no inverso =D
+    public function userImages()
+    {
+        return $this->hasManyThrough('App\userImage','App\user',
+                                     'idUser','idUser', 'idUser');
+    } 
+
 }

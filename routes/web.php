@@ -31,6 +31,8 @@ Route::get('residence/{idResidence}/residenceImage/top','ResidenceController@top
 
 Route::get('residence/{idResidence}/eager','ResidenceController@eager');
 
+Route::get('user/{idUser}/image','UserController@image');
+
 Route::resource('city', 'CityController');
 
 Route::resource('location', 'LocationController');
