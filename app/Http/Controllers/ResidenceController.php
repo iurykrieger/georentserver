@@ -8,6 +8,7 @@ use App\Preference;
 use App\Residence;
 use App\ResidenceImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 
 class ResidenceController extends Controller
@@ -93,7 +94,20 @@ class ResidenceController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+        try
+        {
+            DB::beginTransaction();  
+            $this->validate($request, [
+                'location' => 'required',
+                'idUser' => 'required|integer',
+                'preference' => 'required',
+                'title' => 'required|max:255',
+                'observation' => 'required',
+                'rent' => 'required|numeric',
+                'residenceImages' => 'required'
+            ]);
+
             $residence = $request->all();
 
             //Cria a localização desta residencia.
@@ -130,7 +144,7 @@ class ResidenceController extends Controller
 
                 Image::make($file)->save($path);
 
-                ResidenceImage::create([
+                $residenceImageCreate = ResidenceImage::create([
                     'idResidence' => $residence['idResidence'],
                     'path' => $name_image,
                     'resource' => $residenceImage['resource'],
@@ -139,8 +153,12 @@ class ResidenceController extends Controller
                     'active' => true,
                     ]);   
             }
-            
+            DB::Commit();
             return response()->json($residence);
+        } catch (Exception $e){
+            DB::Rollback();
+            return response()->$e;
+        }      
     }
 
     /**

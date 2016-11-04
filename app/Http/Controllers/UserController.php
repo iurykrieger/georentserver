@@ -30,7 +30,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        try
+        {
+            DB::beginTransaction(); 
+            $this->validate($request, [
                 'name' => 'required|max:100',
                 'birthDate' => 'required|date',
                 'email' => 'required|max:100',
@@ -88,8 +91,12 @@ class UserController extends Controller
                     'active' => true,
                     ]);   
             }
-            
+            DB::Commit();
             return response()->json($user);
+        } catch (Exception $e){
+            DB::Rollback();
+            return response()->$e;
+        }    
     }
 
     /**
