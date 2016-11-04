@@ -13,7 +13,7 @@ class Location extends Model
 
     protected $table = 'location';
 
-    protected $fillable = ['latitude','longitude'];
+    protected $fillable = ['idCity','latitude','longitude'];
 
     public $timestamps = false;
 

@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Location;
+use App\Preference;
 use App\Residence;
+use App\ResidenceImage;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class ResidenceController extends Controller
 {
@@ -90,21 +94,53 @@ class ResidenceController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-                'idLocation' => 'required|integer',
-                'idUser' => 'required|integer',
-                'idPreference' => 'required|integer',
-                'title' => 'required|max:100',
-                'description' => 'required|max:100',
-                'address' => 'required|max:100',
-                'observation' => 'required|max:100',
-                'rent' => 'required|numeric'
-            ]);
             $residence = $request->all();
-            
-            Residence::create($residence);
 
-            return "Residencia cadastrada com sucesso!!";
+            //Cria a localização desta residencia.
+            $location = $request->location;
+            $location = Location::create($location);
+
+            //Cria as preferencias da residencia.
+            $preference = $request->preference;
+            $preference = Preference::create($preference);
+            
+            $residence = Residence::create([
+                'idLocation' => $location['idLocation'],
+                'idUser' => $residence['idUser'],
+                'idPreference' => $preference['idPreference'],
+                'title' => $residence['title'],
+                'description' => $residence['description'],
+                'address' => $residence['address'],
+                'observation' => $residence['observation'],
+                'rent' => $residence['rent'],
+                'tries' => 0,   
+                'active' => true,
+            ]);
+
+            //Adiciona as imagens da residencia.
+            $residenceImages = $request->residenceImages;
+            foreach($residenceImages as $residenceImage){
+                $file = $residenceImage['path'];
+                list($type, $file) = explode(';', $file);
+                list(,$file) = explode(',', $file);
+                $file = base64_decode($file);
+
+                $name_image = "residenceImage_".time().".png";
+                $path = public_path()."/img/residenceImage/".$name_image;
+
+                Image::make($file)->save($path);
+
+                ResidenceImage::create([
+                    'idResidence' => $residence['idResidence'],
+                    'path' => $name_image,
+                    'resource' => $residenceImage['resource'],
+                    'orderImage' => $residenceImage['orderImage'],
+                    'tries' => 0,
+                    'active' => true,
+                    ]);   
+            }
+            
+            return response()->json($residence);
     }
 
     /**

@@ -19,6 +19,19 @@ class ResidenceImageController extends Controller
         return response()->json($all);
     }
 
+    public function file($idResidenceImage)
+    {
+        $residenceImage = ResidenceImage::with('residence')
+            ->where('idResidenceImage', '=', $idResidenceImage)
+            ->orderBy('orderImage','desc')
+            ->first(); 
+        $path = public_path()."/img/residenceImage/".$residenceImage['path'];
+        
+        $data = base64_encode(file_get_contents($path));
+        $src = 'data: '.mime_content_type($path).';base64,'.$data;
+        echo '<img src="'.$src.'">';
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -19,6 +19,19 @@ class UserImageController extends Controller
         return response()->json($all);
     }
 
+    public function file($idUserImage)
+    {
+        $userImage = UserImage::with('user')
+            ->where('idUserImage', '=', $idUserImage)
+            ->orderBy('orderImage','desc')
+            ->first(); 
+        $path = public_path()."/img/userImage/".$userImage['path'];
+        
+        $data = base64_encode(file_get_contents($path));
+        $src = 'data: '.mime_content_type($path).';base64,'.$data;
+        echo '<img src="'.$src.'">';
+    }
+
     /**
      * Store a newly created resource in storage.
      *

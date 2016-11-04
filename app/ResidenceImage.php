@@ -12,7 +12,7 @@ class ResidenceImage extends Model
 
     protected $table = 'residenceImage';
 
-    protected $fillable = ['path','resource','orderImage'];
+    protected $fillable = ['idResidence','path','resource','orderImage'];
 
     public $timestamps = false;
 
