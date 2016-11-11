@@ -19,13 +19,39 @@ class UserImageController extends Controller
         return response()->json($all);
     }
 
-    public function file($idUserImage)
+    public function high($idUserImage)
     {
         $userImage = UserImage::with('user')
             ->where('idUserImage', '=', $idUserImage)
             ->orderBy('orderImage','desc')
             ->first(); 
-        $path = public_path()."/img/userImage/".$userImage['path'];
+        $path = public_path()."/img/userImage/high/".$userImage['path'];
+        
+        $data = base64_encode(file_get_contents($path));
+        $src = 'data: '.mime_content_type($path).';base64,'.$data;
+        echo '<img src="'.$src.'">';
+    }
+
+    public function medium($idUserImage)
+    {
+        $userImage = UserImage::with('user')
+            ->where('idUserImage', '=', $idUserImage)
+            ->orderBy('orderImage','desc')
+            ->first(); 
+        $path = public_path()."/img/userImage/medium/".$userImage['path'];
+        
+        $data = base64_encode(file_get_contents($path));
+        $src = 'data: '.mime_content_type($path).';base64,'.$data;
+        echo '<img src="'.$src.'">';
+    }
+
+    public function low($idUserImage)
+    {
+        $userImage = UserImage::with('user')
+            ->where('idUserImage', '=', $idUserImage)
+            ->orderBy('orderImage','desc')
+            ->first(); 
+        $path = public_path()."/img/userImage/low/".$userImage['path'];
         
         $data = base64_encode(file_get_contents($path));
         $src = 'data: '.mime_content_type($path).';base64,'.$data;

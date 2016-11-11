@@ -22,6 +22,24 @@ class UserController extends Controller
         return response()->json($all);
     }
 
+       /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function eager($idUser)
+    {
+        $eager = User::with(['matches' => function($query){
+            $query->orderBy('dateTime','desc');
+        },                        'userImages' => function($query2){
+            $query2->orderBy('orderImage','desc');                        
+        },
+                                  'preference',
+                                  'residence'])
+        ->findOrFail($idUser);
+        return response()->json($eager);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -73,14 +91,19 @@ class UserController extends Controller
             $userImages = $request->userImages;
             foreach($userImages as $userImage){
                 $file = $userImage['path'];
+                $size = getimagesize($file); 
                 list($type, $file) = explode(';', $file);
                 list(,$file) = explode(',', $file);
                 $file = base64_decode($file);
 
                 $name_image = "userImage_".time().".png";
-                $path = public_path()."/img/userImage/".$name_image;
+                $path_high = public_path()."/img/userImage/high/".$name_image;
+                $path_medium = public_path()."/img/userImage/medium/".$name_image;
+                $path_low = public_path()."/img/userImage/low/".$name_image;
 
-                Image::make($file)->save($path);
+                Image::make($file)->save($path_high);
+                Image::make($file)->resize($size[0]/3, $size[1]/3)->save($path_medium);
+                Image::make($file)->resize($size[0]/5, $size[1]/5)->save($path_low);
 
                 UserImage::create([
                     'path' => $name_image,

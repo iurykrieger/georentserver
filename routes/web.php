@@ -31,9 +31,19 @@ Route::get('residence/{idResidence}/residenceImage/top','ResidenceController@top
 
 Route::get('residence/{idResidence}/eager','ResidenceController@eager');
 
-Route::get('userImage/{idUserImage}/file','UserImageController@file');
+Route::get('userImage/{idUserImage}/high','UserImageController@high');
 
-Route::get('residenceImage/{idResidenceImage}/file','ResidenceImageController@file');
+Route::get('userImage/{idUserImage}/medium','UserImageController@medium');
+
+Route::get('userImage/{idUserImage}/low','UserImageController@low');
+
+Route::get('user/{idUser}/eager','UserController@eager');
+
+Route::get('residenceImage/{idResidenceImage}/high','ResidenceImageController@high');
+
+Route::get('residenceImage/{idResidenceImage}/medium','ResidenceImageController@medium');
+
+Route::get('residenceImage/{idResidenceImage}/low','ResidenceImageController@low');
 
 Route::resource('city', 'CityController');
 

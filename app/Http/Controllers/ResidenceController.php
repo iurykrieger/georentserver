@@ -135,14 +135,20 @@ class ResidenceController extends Controller
             $residenceImages = $request->residenceImages;
             foreach($residenceImages as $residenceImage){
                 $file = $residenceImage['path'];
+                $size = getimagesize($file); 
                 list($type, $file) = explode(';', $file);
                 list(,$file) = explode(',', $file);
                 $file = base64_decode($file);
 
                 $name_image = "residenceImage_".time().".png";
-                $path = public_path()."/img/residenceImage/".$name_image;
 
-                Image::make($file)->save($path);
+                $path_high = public_path()."/img/residenceImage/high/".$name_image;
+                $path_medium = public_path()."/img/residenceImage/medium/".$name_image;
+                $path_low = public_path()."/img/residenceImage/low/".$name_image;
+
+                Image::make($file)->save($path_high);
+                Image::make($file)->resize($size[0]/3, $size[1]/3)->save($path_medium);
+                Image::make($file)->resize($size[0]/5, $size[1]/5)->save($path_low);
 
                 $residenceImageCreate = ResidenceImage::create([
                     'idResidence' => $residence['idResidence'],

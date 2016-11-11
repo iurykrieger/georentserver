@@ -26,4 +26,22 @@ class User extends Model
         return $this->belongsTo('App\Preference','idPreference');
     } 
 
+    public function matches()
+    {
+        return $this->hasManyThrough('App\Match','App\user',
+                                     'idUser','idUser', 'idUser');
+    } 
+
+    public function userImages()
+    {
+        return $this->hasManyThrough('App\userImage','App\user',
+                                     'idUser','idUser', 'idUser');
+    } 
+
+    public function residence()
+    {
+        return $this->hasManyThrough('App\Residence','App\user',
+                                     'idUser','idUser', 'idUser');
+    } 
+
 }
