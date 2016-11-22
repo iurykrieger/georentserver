@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\City;
 use App\Http\Requests;
 use App\Preference;
 use App\User;
@@ -48,26 +49,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        try
-        {
-            DB::beginTransaction(); 
-            $this->validate($request, [
-                'name' => 'required|max:100',
-                'birthDate' => 'required|date',
-                'email' => 'required|max:100',
-                'phone' => 'required|max:11',
-                'password' => 'required|min:6',
-                'credits' => 'required|numeric',
-                'type' => 'required|integer',
-                'distance' => 'required|integer',
-                'idCity' => 'required|integer'
-            ]);
-
-            $user = $request->all();
-
+      //  try
+      //  {
+      //      DB::beginTransaction(); 
+            $user = $request->get('jsonObject');
+            //retorna array, se tirar o true do json_decode vai retornar um objeto e vai dar erro em tudo.
+            $user = json_decode($user,true);
+            
             //Chama a preference, criar e atribui abaixo a criação junto com o usuário.
-            $preference = $request->preference;
+            $preference = $user['preference'];
             $preference = Preference::create($preference);
+
+            //$city = $user['city'];
+            //$city = City::create($city);
 
             //Cria o usuário.
             //pegar a id do usuário inserido para inserir as imagens.
@@ -86,7 +80,7 @@ class UserController extends Controller
                 'active' => true,
             ]);
 
-
+/*
             //Adiciona as imagens do usuario.
             $userImages = $request->userImages;
             foreach($userImages as $userImage){
@@ -113,13 +107,14 @@ class UserController extends Controller
                     'tries' => 0,
                     'active' => true,
                     ]);   
-            }
-            DB::Commit();
+            }*/
+            //DB::Commit();
             return response()->json($user);
-        } catch (Exception $e){
-            DB::Rollback();
-            return response()->$e;
-        }    
+        //} catch (Exception $e){
+        //    DB::Rollback();
+        //    return response()->$e;
+       // }    
+        
     }
 
     /**

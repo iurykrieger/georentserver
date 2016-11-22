@@ -45,6 +45,8 @@ Route::get('residenceImage/{idResidenceImage}/medium','ResidenceImageController@
 
 Route::get('residenceImage/{idResidenceImage}/low','ResidenceImageController@low');
 
+Route::get('city/state/{idState}','CityController@state');
+
 Route::resource('city', 'CityController');
 
 Route::resource('location', 'LocationController');

@@ -19,6 +19,12 @@ class CityController extends Controller
         return response()->json($all);
     }
 
+    public function state($idState)
+    {
+        $state = City::where('uf', '=', $idState)->get();    
+        return response()->json($state);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
