@@ -26,6 +26,7 @@ class CreateUserTable extends Migration
             $table->integer('idPreference')->unsigned();
             $table->integer('idCity')->unsigned();
             $table->integer('profileImage')->unsigned()->nullable()->default(null);
+            $table->string('remember_token',100)->nullable()->default(null);
             $table->timestamps();
         });
 
