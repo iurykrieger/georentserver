@@ -29,6 +29,26 @@ class ResidenceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function residenceDisp($distance){
+        $distanceW = DB::table('location')
+                     ->select(DB::raw('substr((6371 *
+                                       acos(
+                                           cos(radians(-27.001149)) *
+                                           cos(radians(latitude)) *
+                                           cos(radians(-51.176066) - radians(longitude)) +
+                                           sin(radians(-27.001149)) *
+                                           sin(radians(latitude))
+                                       )),1,4) AS distance'))
+                     ->having('distance', '>', $distance)
+                     ->get();
+        return response()->json($distanceW);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function limit($id,$qtReg)
     {
         $sql = Residence::with('location','user','preference')

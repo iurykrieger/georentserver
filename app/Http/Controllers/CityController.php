@@ -25,6 +25,7 @@ class CityController extends Controller
         return response()->json($state);
     }
 
+
     /**
      * Store a newly created resource in storage.
      *

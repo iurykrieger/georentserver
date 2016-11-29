@@ -29,7 +29,7 @@ class UserController extends Controller
         return response()->json($all);
     }
 
-       /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -44,8 +44,26 @@ class UserController extends Controller
                                   'preference',
                                   'residence'])
         ->findOrFail($idUser);
-        return response()->json($eager);
+        return response()->json($eager);    
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+    // * @return \Illuminate\Http\Response
+     */
+//    public function authenticate($email,$password)
+  //  {
+        //if (Auth::attempt(['email' => $email, 'password' => $password])) {
+          //  return true;
+            // The user is being remembered...
+        //}
+
+    //    if($email = 'batata'){
+      //      return 'Deu boa';
+    //    }
+  //      return 'Não deu boa';
+//    }
 
     /**
      * Store a newly created resource in storage.
@@ -131,8 +149,11 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $all = User::with('city','preference')->findOrFail($id);
-        return response()->json($all);
+        Auth::loginUsingId($id,true);
+        if (Auth::viaRemember()) {
+               $all = User::with('city','preference')->findOrFail($id);
+                return response()->json($all);
+        }
     }
 
     /**
