@@ -48,13 +48,11 @@ class LoginController extends Controller
         $password = $user->password;
         $email = $user->email;
 
-        //dd(bcrypt($var_password));
-
         if(password_verify($var_password,$password)){
-            Auth::login($user);
+            Auth::login($user,true); 
             return response()->json($user);
         }else{
-            return 'batata';
+            return 'Não foi possivel fazer login.';
         }
     }
 

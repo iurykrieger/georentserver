@@ -7,6 +7,7 @@ use App\Location;
 use App\Preference;
 use App\Residence;
 use App\ResidenceImage;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -20,8 +21,17 @@ class ResidenceController extends Controller
      */
     public function index()
     {
-        $all = Residence::with('location','user','preference')->get();
-        return response()->json($all);
+        $var_token = $_GET['api_token'];
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $all = Residence::with('location','user','preference')->get();
+            return response()->json($all);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -29,19 +39,28 @@ class ResidenceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function residenceDisp($distance){
+    public function near($idUser){
+        $user = User::with('location')->findOrFail($idUser);
+  
         $distanceW = DB::table('location')
-                     ->select(DB::raw('substr((6371 *
-                                       acos(
-                                           cos(radians(-27.001149)) *
-                                           cos(radians(latitude)) *
-                                           cos(radians(-51.176066) - radians(longitude)) +
-                                           sin(radians(-27.001149)) *
-                                           sin(radians(latitude))
-                                       )),1,4) AS distance'))
-                     ->having('distance', '>', $distance)
+                     ->select(DB::raw('idLocation,substr((6371 *
+                                                acos(
+                                                    cos(radians('.$user->location['latitude'].')) *
+                                                    cos(radians(latitude)) *
+                                                    cos(radians('.$user->location['longitude'].') - radians(longitude)) +
+                                                    sin(radians('.$user->location['latitude'].')) *
+                                                    sin(radians(latitude))
+                                                )),1,4) AS distanceW'))
+                     ->having('distanceW', '<', $user->distance)
                      ->get();
-        return response()->json($distanceW);
+        //return count($distanceW);
+      //arrumar a distance.
+      /*  for ($i = 0; $i <= count($distanceW); ++$i){
+            $distanceTeste = $distanceW[$i]['idLocation'];
+        }
+        echo $distanceTeste;
+        *///$residence = Residence::with('location')->where('idLocation','in',$locations)->get();
+        //return response()->json($residence);
     }
 
     /**
@@ -118,24 +137,17 @@ class ResidenceController extends Controller
         try
         {
             DB::beginTransaction();  
-            $this->validate($request, [
-                'location' => 'required',
-                'idUser' => 'required|integer',
-                'preference' => 'required',
-                'title' => 'required|max:255',
-                'observation' => 'required',
-                'rent' => 'required|numeric',
-                'residenceImages' => 'required'
-            ]);
 
-            $residence = $request->all();
+            $residence = $request->get('jsonObject');
+            //retorna array, se tirar o true do json_decode vai retornar um objeto e vai dar erro em tudo.
+            $residence = json_decode($residence,true);
 
             //Cria a localização desta residencia.
-            $location = $request->location;
+            $location = $residence['location'];
             $location = Location::create($location);
 
             //Cria as preferencias da residencia.
-            $preference = $request->preference;
+            $preference = $user['preference'];
             $preference = Preference::create($preference);
             
             $residence = Residence::create([
@@ -152,7 +164,7 @@ class ResidenceController extends Controller
             ]);
 
             //Adiciona as imagens da residencia.
-            $residenceImages = $request->residenceImages;
+           /* $residenceImages = $request->residenceImages;
             foreach($residenceImages as $residenceImage){
                 $file = $residenceImage['path'];
                 $size = getimagesize($file); 
@@ -178,7 +190,7 @@ class ResidenceController extends Controller
                     'tries' => 0,
                     'active' => true,
                     ]);   
-            }
+            }*/
             DB::Commit();
             return response()->json($residence);
         } catch (Exception $e){

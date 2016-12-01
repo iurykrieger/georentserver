@@ -10,7 +10,6 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-
 	Route::get('/residence/limit/{id}/{qtReg}','ResidenceController@limit');
 
 	Route::get('residenceImage/residence/{idResidence}','ResidenceImageController@residence');
@@ -21,7 +20,7 @@
 
 	Route::get('residenceImage/residence/{idResidence}/top','ResidenceImageController@residenceTop');
 
-	Route::get('residence/distance/{distance}','ResidenceController@residenceDisp');
+	Route::get('residence/user/{idUser}/near','ResidenceController@near');
 
 	Route::get('residence/{idResidence}/residenceImage','ResidenceController@residenceImages');
 
@@ -71,12 +70,8 @@
     return view('welcome');
 	});
 
-//Route::post('login', 'Auth\LoginController@login');
-//Route::post('logout', 'Auth\LoginController@logout');
 Route::post('login','Auth\LoginController@login');
 
 Route::resource('user', 'UserController');
-
-//Route::get('city/state/{idState}','CityController@state');
 
 Route::get('/home', 'HomeController@index');

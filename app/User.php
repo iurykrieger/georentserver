@@ -15,13 +15,13 @@ class User extends Model implements AuthenticatableContract,
 {
     use Authenticatable, Authorizable;
 
-    protected $hidden = ['remember_token','created_at','updated_at','password','idPreference','idCity'];
+    protected $hidden = ['remember_token','created_at','updated_at','password','idPreference','idCity','idLocation'];
     
     protected $primaryKey = "idUser";
 
     protected $table = 'user';
 
-    protected $fillable = ['idPreference','idCity','name','birthDate','email','phone','password','credits','type','distance','profileImage'];
+    protected $fillable = ['idLocation','idPreference','idCity','name','birthDate','email','phone','password','credits','type','distance','profileImage','remember_token','api_token'];
 
     public $timestamps = false;
 
@@ -51,6 +51,11 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->hasManyThrough('App\Residence','App\user',
                                      'idUser','idUser', 'idUser');
+    } 
+
+    public function location()
+    {
+        return $this->belongsTo('App\Location','idLocation');
     } 
 
 }

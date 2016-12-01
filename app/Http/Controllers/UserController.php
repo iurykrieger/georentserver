@@ -18,12 +18,12 @@ class UserController extends Controller
     /**
      * Instantiate a new UserController instance.
      *
-     * @return void
+ //    * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth', ['except' => array('index','store')]);
-    }
+ //   public function __construct()
+  //  {
+  //      $this->middleware('auth', ['except' => array('index','store')]);
+  //  }
 
     /**
      * Display a listing of the resource.
@@ -32,9 +32,19 @@ class UserController extends Controller
      */
     public function index()
     {
-        $all = User::with('city','preference')->get();
-        return response()->json($all);
-    }
+        $var_token = $_GET['api_token'];
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+          $all = User::with('city','preference')->get();
+          return response()->json($all);
+      }else
+      { return response()->json(array(
+        'code'      =>  404,
+        'message'   =>  'Usuário não autenticado'
+        ), 404);
+  }
+}
 
     /**
      * Display a listing of the resource.
@@ -43,16 +53,27 @@ class UserController extends Controller
      */
     public function eager($idUser)
     {
-        $eager = User::with(['matches' => function($query){
+        $var_token = $_GET['api_token'];
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+           $eager = User::with(['matches' => function($query){
             $query->orderBy('dateTime','desc');
         },                        'userImages' => function($query2){
             $query2->orderBy('orderImage','desc');                        
         },
-                                  'preference',
-                                  'residence'])
-        ->findOrFail($idUser);
-        return response()->json($eager);    
-    }
+        'preference',
+        'residence'])
+           ->findOrFail($idUser);
+
+           return response()->json($eager);
+       }else
+       { return response()->json(array(
+       'code'      =>  404,
+        'message'   =>  'Usuário não autenticado'
+        ), 404);
+   }
+}
 
     /**
      * Store a newly created resource in storage.
@@ -75,7 +96,7 @@ class UserController extends Controller
             $preference = Preference::create($preference);
 
             $city = $user['city'];
-       
+
             //Cria o usuário.
             //pegar a id do usuário inserido para inserir as imagens.
             $user = User::create([
@@ -88,9 +109,13 @@ class UserController extends Controller
                 'distance' => $user['distance'],
                 'idPreference' => $preference['idPreference'],
                 'idCity' => $city['idCity'],
+                'api_token' => str_random(60),
                 'tries' => 0,   
                 'active' => true,
-            ]);
+                ]);
+
+            //$user->api_token = str_random(60);
+            //$user->save();
 
 /*
             //Adiciona as imagens do usuario.
@@ -119,16 +144,16 @@ class UserController extends Controller
                     'tries' => 0,
                     'active' => true,
                     ]);   
-            }*/
-            DB::Commit();
+                }*/
+                DB::Commit();
            // Auth::login($user,true);
-            return response()->json($user);
-        } catch (Exception $e){
-            DB::Rollback();
-            return response()->$e;
-        }    
-        
-    }
+                return response()->json($user);
+            } catch (Exception $e){
+                DB::Rollback();
+                return response()->$e;
+            }    
+
+        }
 
     /**
      * Display the specified resource.
@@ -138,10 +163,19 @@ class UserController extends Controller
      */
     public function show($id)
     {
-       dd(Auth::user()); 
-       $all = User::with('city','preference')->findOrFail($id);
-                return response()->json($all);
-    }
+     $var_token = $_GET['api_token'];
+     $user_token = User::where('api_token',$var_token)->first();
+
+     if($user_token != null) {
+        $all = User::with('city','preference')->findOrFail($id);
+        return response()->json($all);
+    }else
+    { return response()->json(array(
+        'code'      =>  404,
+        'message'   =>  'Usuário não autenticado'
+        ), 404);
+}
+}
 
     /**
      * Update the specified resource in storage.
@@ -152,11 +186,21 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $input = $request->all();
-        $user->fill($input)->save();
-        return response()->json($User);
+        $var_token = $_GET['api_token'];
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $user = User::findOrFail($id);
+            $input = $request->all();
+            $user->fill($input)->save();
+            return response()->json($user);
+        }else
+        { return response()->json(array(
+            'code'      =>  404,
+            'message'   =>  'Usuário não autenticado'
+            ), 404);
     }
+}
 
     /**
      * Remove the specified resource from storage.
@@ -166,7 +210,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        $var_token = $_GET['api_token'];
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $user = User::findOrFail($id);
+            $user->delete();
+        }else
+        { return response()->json(array(
+            'code'      =>  404,
+            'message'   =>  'Usuário não autenticado'
+            ), 404);
     }
+}
 }
