@@ -2,20 +2,18 @@
 
 namespace App;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Support\Facades\Auth;
 
+
 class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract
+                                    AuthorizableContract
 {
-    use Authenticatable, Authorizable, CanResetPassword;
+    use Authenticatable, Authorizable;
 
     protected $hidden = ['remember_token','created_at','updated_at','password','idPreference','idCity'];
     
@@ -23,7 +21,7 @@ class User extends Model implements AuthenticatableContract,
 
     protected $table = 'user';
 
-    protected $fillable = ['password','idPreference','idCity','name','birthDate','email','phone','password','credits','type','distance','profileImage'];
+    protected $fillable = ['idPreference','idCity','name','birthDate','email','phone','password','credits','type','distance','profileImage'];
 
     public $timestamps = false;
 

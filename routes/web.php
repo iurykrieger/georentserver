@@ -11,7 +11,6 @@
 |
 */
 
-//Route::group(['middleware' => 'auth'],function() {
 	Route::get('/residence/limit/{id}/{qtReg}','ResidenceController@limit');
 
 	Route::get('residenceImage/residence/{idResidence}','ResidenceImageController@residence');
@@ -21,7 +20,6 @@
 	Route::get('residenceImage/top/limit/{id}/{qtReg}','ResidenceImageController@topAllResidencesLimit');
 
 	Route::get('residenceImage/residence/{idResidence}/top','ResidenceImageController@residenceTop');
-
 
 	Route::get('residence/distance/{distance}','ResidenceController@residenceDisp');
 
@@ -57,24 +55,27 @@
 
 	Route::resource('userImage', 'UserImageController');
 
+	Route::post('userImage', 'UserImageController@store');
+
 	Route::resource('match', 'MatchController');
 
 	Route::resource('message', 'MessageController');
 
 	Route::resource('preference', 'PreferenceController');
 
-	//Auth::routes();
+	Auth::routes();
 
 	Route::get('/home', 'HomeController@index');
 
 	Route::get('/', function () {
     return view('welcome');
-});
-//});
+	});
 
-//Route::post('login/{$email}/{$password}','UserController@authenticate');
+//Route::post('login', 'Auth\LoginController@login');
+//Route::post('logout', 'Auth\LoginController@logout');
+Route::post('login','Auth\LoginController@login');
 
-//Route::resource('user', 'UserController');
+Route::resource('user', 'UserController');
 
 //Route::get('city/state/{idState}','CityController@state');
 

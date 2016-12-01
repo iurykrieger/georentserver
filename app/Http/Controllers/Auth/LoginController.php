@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -25,16 +29,33 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/user/'.Auth::id();
+   protected $loginPath = '/user/1';
 
- 
     /**
-     * Create a new controller instance.
+     * Create a new authentication controller instance.
      *
      * @return void
      */
-  //  public function __construct()
-   // {
-   //     $this->middleware('guest', ['except' => 'logout']);
-    //}
+    public function __construct()
+    {
+        $this->middleware('guest');
+    }
+
+    public function login(){
+        $var_email = $_GET['email'];
+        $var_password = $_GET['password'];
+        $user = User::where('email',$var_email)->first();
+        $password = $user->password;
+        $email = $user->email;
+
+        //dd(bcrypt($var_password));
+
+        if(password_verify($var_password,$password)){
+            Auth::login($user);
+            return response()->json($user);
+        }else{
+            return 'batata';
+        }
+    }
+
 }
