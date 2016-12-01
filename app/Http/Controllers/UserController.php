@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Request as RequestF;
 use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
@@ -32,7 +33,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $var_token = $_GET['api_token'];
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -43,8 +44,8 @@ class UserController extends Controller
         'code'      =>  404,
         'message'   =>  'Usuário não autenticado'
         ), 404);
-  }
-}
+      }
+    }
 
     /**
      * Display a listing of the resource.
@@ -53,7 +54,8 @@ class UserController extends Controller
      */
     public function eager($idUser)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = RequestF::header('api_token');
+        
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -88,6 +90,7 @@ class UserController extends Controller
             DB::beginTransaction(); 
 
             $user = $request->get('jsonObject');
+            
             //retorna array, se tirar o true do json_decode vai retornar um objeto e vai dar erro em tudo.
             $user = json_decode($user,true);
 
@@ -114,39 +117,8 @@ class UserController extends Controller
                 'active' => true,
                 ]);
 
-            //$user->api_token = str_random(60);
-            //$user->save();
 
-/*
-            //Adiciona as imagens do usuario.
-            $userImages = $request->userImages;
-            foreach($userImages as $userImage){
-                $file = $userImage['path'];
-                $size = getimagesize($file); 
-                list($type, $file) = explode(';', $file);
-                list(,$file) = explode(',', $file);
-                $file = base64_decode($file);
-
-                $name_image = "userImage_".time().".png";
-                $path_high = public_path()."/img/userImage/high/".$name_image;
-                $path_medium = public_path()."/img/userImage/medium/".$name_image;
-                $path_low = public_path()."/img/userImage/low/".$name_image;
-
-                Image::make($file)->save($path_high);
-                Image::make($file)->resize($size[0]/3, $size[1]/3)->save($path_medium);
-                Image::make($file)->resize($size[0]/5, $size[1]/5)->save($path_low);
-
-                UserImage::create([
-                    'path' => $name_image,
-                    'resource' => $userImage['resource'],
-                    'orderImage' => $userImage['orderImage'],
-                    'idUser' => $user['idUser'],
-                    'tries' => 0,
-                    'active' => true,
-                    ]);   
-                }*/
                 DB::Commit();
-           // Auth::login($user,true);
                 return response()->json($user);
             } catch (Exception $e){
                 DB::Rollback();
@@ -163,7 +135,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-     $var_token = $_GET['api_token'];
+     $var_token = RequestF::header('api_token');
      $user_token = User::where('api_token',$var_token)->first();
 
      if($user_token != null) {
@@ -186,7 +158,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -210,7 +182,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {

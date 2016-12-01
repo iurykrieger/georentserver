@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as Requestabc;
 
 class LoginController extends Controller
 {
@@ -41,9 +43,15 @@ class LoginController extends Controller
         $this->middleware('guest');
     }
 
-    public function login(){
-        $var_email = $_GET['email'];
-        $var_password = $_GET['password'];
+      /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function login(Request $request){
+        $var_email = $request->get('email');
+        $var_password = $request->get('password');
         $user = User::where('email',$var_email)->first();
         $password = $user->password;
         $email = $user->email;

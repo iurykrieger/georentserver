@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Message;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 
 class MessageController extends Controller
 {
@@ -15,8 +15,17 @@ class MessageController extends Controller
      */
     public function index()
     {
-        $all = Message::with('userFrom','userTo')->get();
-        return response()->json($all);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $all = Message::with('userFrom','userTo')->get();
+            return response()->json($all);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -27,9 +36,18 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        $message = $request->all();
-        $message = Message::create($message);
-        return response()->json($message);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $message = $request->all();
+            $message = Message::create($message);
+            return response()->json($message);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -40,8 +58,17 @@ class MessageController extends Controller
      */
     public function show($id)
     {
-        $all = Message::with('userFrom','userTo')->findOrFail($id);
-        return response()->json($all);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $all = Message::with('userFrom','userTo')->findOrFail($id);
+            return response()->json($all);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -53,10 +80,19 @@ class MessageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $message = Message::findOrFail($id);
-        $input = $request->all();
-        $message->fill($input)->save();
-        return response()->json($message);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $message = Message::findOrFail($id);
+            $input = $request->all();
+            $message->fill($input)->save();
+            return response()->json($message);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -67,7 +103,16 @@ class MessageController extends Controller
      */
     public function destroy($id)
     {
-        $message = Message::findOrFail($id);
-        $message->delete();
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $message = Message::findOrFail($id);
+            $message->delete();
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 }

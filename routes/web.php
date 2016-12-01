@@ -28,6 +28,8 @@
 
 	Route::get('residence/{idResidence}/eager','ResidenceController@eager');
 
+	Route::get('residence/user/{idUser}/{id}/{qtReg}','ResidenceController@residences');
+
 	Route::get('userImage/{idUserImage}/high','UserImageController@high');
 
 	Route::get('userImage/{idUserImage}/medium','UserImageController@medium');

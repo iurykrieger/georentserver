@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\City;
 use App\Http\Requests;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 
 class CityController extends Controller
 {    
@@ -15,14 +15,32 @@ class CityController extends Controller
      */
     public function index()
     {
-        $all = City::all();
-        return response()->json($all);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $all = City::all();
+            return response()->json($all);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     public function state($idState)
     {
-        $state = City::where('uf', '=', $idState)->get();    
-        return response()->json($state);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $state = City::where('uf', '=', $idState)->get();    
+            return response()->json($state);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
 
@@ -34,9 +52,18 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        $city = $request->all();
-        $city = City::create($city);
-        return response()->json($city);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $city = $request->all();
+            $city = City::create($city);
+            return response()->json($city);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -47,8 +74,17 @@ class CityController extends Controller
      */
     public function show($id)
     {
-        $all = City::findOrFail($id);
-        return response()->json($all);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $all = City::findOrFail($id);
+            return response()->json($all);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -60,10 +96,19 @@ class CityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $city = City::findOrFail($id);
-        $input = $request->all();
-        $city->fill($input)->save();
-        return response()->json($city);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $city = City::findOrFail($id);
+            $input = $request->all();
+            $city->fill($input)->save();
+            return response()->json($city);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -74,7 +119,16 @@ class CityController extends Controller
      */
     public function destroy($id)
     {
-        $city = City::findOrFail($id);
-        $city->delete();
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $city = City::findOrFail($id);
+            $city->delete();
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 }

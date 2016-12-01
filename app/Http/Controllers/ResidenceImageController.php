@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\ResidenceImage;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 
 class ResidenceImageController extends Controller
 {
@@ -15,7 +15,7 @@ class ResidenceImageController extends Controller
      */
     public function index()
     {
-        $var_token = $request->get('api_token');
+        $var_token = Request::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -30,7 +30,7 @@ class ResidenceImageController extends Controller
 
     public function high($idResidenceImage)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = Request::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -52,7 +52,7 @@ class ResidenceImageController extends Controller
 
      public function medium($idResidenceImage)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = Request::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -74,7 +74,7 @@ class ResidenceImageController extends Controller
 
      public function low($idResidenceImage)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = Request::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -101,7 +101,7 @@ class ResidenceImageController extends Controller
      */
     public function residence($idResidence)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = Request::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -123,7 +123,7 @@ class ResidenceImageController extends Controller
      */
     public function topAllResidences()
     {
-        $var_token = $_GET['api_token'];
+        $var_token = Request::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -145,7 +145,7 @@ class ResidenceImageController extends Controller
      */
     public function topAllResidencesLimit($id,$qtReg)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = Request::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -170,7 +170,7 @@ class ResidenceImageController extends Controller
      */
     public function residenceTop($idResidence)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = Request::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -194,7 +194,7 @@ class ResidenceImageController extends Controller
      */
     public function store(Request $request)
     {
-       $var_token = $_GET['api_token'];
+        $var_token = Request::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -248,7 +248,7 @@ class ResidenceImageController extends Controller
      */
     public function show($id)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = Request::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -270,7 +270,7 @@ class ResidenceImageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = Request::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -293,7 +293,7 @@ class ResidenceImageController extends Controller
      */
     public function destroy($id)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = Request::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Match;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 
 class MatchController extends Controller
 {
@@ -15,8 +15,17 @@ class MatchController extends Controller
      */
     public function index()
     {
-        $all = Match::with('residence','user')->get();
-        return response()->json($all);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $all = Match::with('residence','user')->get();
+            return response()->json($all);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -27,9 +36,18 @@ class MatchController extends Controller
      */
     public function store(Request $request)
     {
-        $match = $request->all();
-        $match = Match::create($match);
-        return response()->json($match);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $match = $request->all();
+            $match = Match::create($match);
+            return response()->json($match);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -40,8 +58,17 @@ class MatchController extends Controller
      */
     public function show($id)
     {
-        $all = Match::with('residence','user')->findOrFail($id);
-        return response()->json($all);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $all = Match::with('residence','user')->findOrFail($id);
+            return response()->json($all);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -53,10 +80,19 @@ class MatchController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $match = Match::findOrFail($id);
-        $input = $request->all();
-        $match->fill($input)->save();
-        return response()->json($match);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $match = Match::findOrFail($id);
+            $input = $request->all();
+            $match->fill($input)->save();
+            return response()->json($match);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -67,7 +103,16 @@ class MatchController extends Controller
      */
     public function destroy($id)
     {
-        $match = Match::findOrFail($id);
-        $match->delete();
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $match = Match::findOrFail($id);
+            $match->delete();
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 }

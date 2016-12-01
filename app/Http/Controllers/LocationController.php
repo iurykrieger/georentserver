@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\City;
 use App\Http\Requests;
 use App\Location;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 
 class LocationController extends Controller
 {
@@ -16,8 +16,17 @@ class LocationController extends Controller
      */
     public function index()
     {
-        $all = Location::with('city')->get();
-        return response()->json($all);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $all = Location::with('city')->get();
+            return response()->json($all);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -28,9 +37,18 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        $location = $request->all();
-        $location = Location::create($location);
-        return response()->json($location);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $location = $request->all();
+            $location = Location::create($location);
+            return response()->json($location);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -41,8 +59,17 @@ class LocationController extends Controller
      */
     public function show($id)
     {
-        $location = Location::with('city')->findOrFail($id);
-        return response()->json($location);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $location = Location::with('city')->findOrFail($id);
+            return response()->json($location);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -54,10 +81,19 @@ class LocationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $location = Location::findOrFail($id);
-        $input = $request->all();
-        $location->fill($input)->save();
-        return response()->json($location);
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $location = Location::findOrFail($id);
+            $input = $request->all();
+            $location->fill($input)->save();
+            return response()->json($location);
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 
     /**
@@ -68,7 +104,16 @@ class LocationController extends Controller
      */
     public function destroy($id)
     {
-        $location = Location::findOrFail($id);
-        $location->delete();
+        $var_token = Request::header('api_token');
+        $user_token = User::where('api_token',$var_token)->first();
+
+        if($user_token != null) {
+            $location = Location::findOrFail($id);
+            $location->delete();
+        } else { return response()->json(array(
+                        'code'      =>  404,
+                        'message'   =>  'Usuário não autenticado'
+                        ), 404);
+                }
     }
 }

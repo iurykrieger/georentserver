@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\User;
 use App\UserImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as RequestF;
 use Intervention\Image\Facades\Image;
 
 class UserImageController extends Controller
@@ -18,7 +19,7 @@ class UserImageController extends Controller
      */
     public function index()
     {
-        $var_token = $_GET['api_token'];
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -33,7 +34,7 @@ class UserImageController extends Controller
 
 public function high($idUserImage)
 {
-    $var_token = $_GET['api_token'];
+    $var_token = RequestF::header('api_token');
     $user_token = User::where('api_token',$var_token)->first();
 
     if($user_token != null) {
@@ -55,7 +56,7 @@ public function high($idUserImage)
 
 public function medium($idUserImage)
 {
-    $var_token = $_GET['api_token'];
+    $var_token = RequestF::header('api_token');
     $user_token = User::where('api_token',$var_token)->first();
 
     if($user_token != null) {
@@ -77,7 +78,7 @@ public function medium($idUserImage)
 
 public function low($idUserImage)
 {
-    $var_token = $_GET['api_token'];
+    $var_token = RequestF::header('api_token');
     $user_token = User::where('api_token',$var_token)->first();
 
     if($user_token != null) {
@@ -118,9 +119,9 @@ public function low($idUserImage)
             //Adiciona as imagens do usuario.
             $userImage = $userImageReceive;
             $file = $userImage['path'];
-            $file = base64_decode($file);
+            $file = base64_decode($file);;//imap_base64($file);
 
-            $name_image = "userImage_".time().".jpg";
+            $name_image = "userImage_".time().".jpeg";
             $path_high = public_path()."/img/userImage/high/".$name_image;
             $path_medium = public_path()."/img/userImage/medium/".$name_image;
             $path_low = public_path()."/img/userImage/low/".$name_image;
@@ -156,7 +157,7 @@ public function low($idUserImage)
      */
     public function show($id)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -178,7 +179,7 @@ public function low($idUserImage)
      */
     public function update(Request $request, $id)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -201,7 +202,7 @@ public function low($idUserImage)
      */
     public function destroy($id)
     {
-        $var_token = $_GET['api_token'];
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
