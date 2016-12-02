@@ -15,7 +15,7 @@ class User extends Model implements AuthenticatableContract,
 {
     use Authenticatable, Authorizable;
 
-    protected $hidden = ['remember_token','created_at','updated_at','password','idPreference','idCity','idLocation'];
+    protected $hidden = ['profileImage','remember_token','created_at','updated_at','password','idPreference','idCity','idLocation'];
     
     protected $primaryKey = "idUser";
 
@@ -57,5 +57,9 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->belongsTo('App\Location','idLocation');
     } 
+
+    public function profileImageUser(){
+        return $this->hasOne('App\userImage', 'idUserImage','profileImage');
+    }
 
 }

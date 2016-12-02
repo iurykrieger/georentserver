@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\City;
 use App\Http\Requests;
+use App\Location;
 use App\Preference;
 use App\User;
 use App\UserImage;
@@ -33,18 +34,18 @@ class UserController extends Controller
      */
     public function index()
     {
-        $var_token = RequestF::header('api_token');
-        $user_token = User::where('api_token',$var_token)->first();
+        //$var_token = RequestF::header('api_token');
+        //$user_token = User::where('api_token',$var_token)->first();
 
-        if($user_token != null) {
+        //if($user_token != null) {
           $all = User::with('city','preference')->get();
           return response()->json($all);
-      }else
-      { return response()->json(array(
-        'code'      =>  404,
-        'message'   =>  'Usuário não autenticado'
-        ), 404);
-      }
+      //}else
+      //{ return response()->json(array(
+      //  'code'      =>  404,
+      //  'message'   =>  'Usuário não autenticado'
+       // ), 404);
+      //}
     }
 
     /**
@@ -65,7 +66,9 @@ class UserController extends Controller
             $query2->orderBy('orderImage','desc');                        
         },
         'preference',
-        'residence'])
+        'residence',
+        'location',
+        'profileImageUser'])
            ->findOrFail($idUser);
 
            return response()->json($eager);
@@ -74,8 +77,8 @@ class UserController extends Controller
        'code'      =>  404,
         'message'   =>  'Usuário não autenticado'
         ), 404);
-   }
-}
+        }
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -98,6 +101,17 @@ class UserController extends Controller
             $preference = $user['preference'];
             $preference = Preference::create($preference);
 
+            $location = $user['location']; 
+                $city = $location['city'];
+
+                $location = Location::create([
+                    'latitude' => $location['latitude'],
+                    'longitude' => $location['longitude'],
+                    'idCity' => $city['idCity'],
+                    'tries' => 0,   
+                    'active' => true,
+                ]);
+
             $city = $user['city'];
 
             //Cria o usuário.
@@ -112,6 +126,7 @@ class UserController extends Controller
                 'distance' => $user['distance'],
                 'idPreference' => $preference['idPreference'],
                 'idCity' => $city['idCity'],
+                'idLocation' => $location['idLocation'],
                 'api_token' => str_random(60),
                 'tries' => 0,   
                 'active' => true,

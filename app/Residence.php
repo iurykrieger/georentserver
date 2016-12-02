@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Residence extends Model
 {
-    protected $hidden = ['idUser','idPreference','idLocation','remember_token','created_at','updated_at'];
+    protected $hidden = ['profileImage','idUser','idPreference','idLocation','remember_token','created_at','updated_at'];
     
     protected $primaryKey = "idResidence";
 
@@ -42,5 +42,9 @@ class Residence extends Model
         return $this->hasManyThrough('App\Match','App\residence',
                                      'idResidence','idResidence', 'idResidence');
     } 
+
+    public function profileImageResidence(){
+        return $this->hasOne('App\ResidenceImage', 'idResidenceImage','profileImage');
+    }
     
 }

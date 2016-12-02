@@ -8,8 +8,9 @@ use App\Preference;
 use App\Residence;
 use App\ResidenceImage;
 use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Request as RequestF;
 use Intervention\Image\Facades\Image;
 
 class ResidenceController extends Controller
@@ -21,7 +22,7 @@ class ResidenceController extends Controller
      */
     public function index()
     {
-        $var_token = Request::header('api_token');
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -40,7 +41,7 @@ class ResidenceController extends Controller
     * @return \Illuminate\Http\Response
     */
     public function residences($idUser,$id,$qtReg){
-       $var_token = Request::header('api_token');
+       $var_token = RequestF::header('api_token');
        $user_token = User::where('api_token',$var_token)->first();
         if($user_token != null) {
            $residence = Residence::with('user')
@@ -63,7 +64,7 @@ class ResidenceController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function near($idUser){
-        $var_token = Request::header('api_token');
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -103,7 +104,7 @@ class ResidenceController extends Controller
      */
     public function limit($id,$qtReg)
     {
-       $var_token = Request::header('api_token');
+       $var_token = RequestF::header('api_token');
        $user_token = User::where('api_token',$var_token)->first();
         if($user_token != null) {
             $sql = Residence::with('location','user','preference')
@@ -126,7 +127,7 @@ class ResidenceController extends Controller
      */
     public function residenceImages($idResidence)
     {
-        $var_token = Request::header('api_token');
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -148,7 +149,7 @@ class ResidenceController extends Controller
      */
     public function eager($idResidence)
     {
-        $var_token = Request::header('api_token');
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -160,7 +161,8 @@ class ResidenceController extends Controller
             'location.city',
             'preference',
             'user',
-            'matches.user'])
+            'matches.user',
+            'profileImageResidence'])
              ->findOrFail($idResidence);
              return response()->json($eager);
         } else { return response()->json(array(
@@ -177,7 +179,7 @@ class ResidenceController extends Controller
      */
     public function top($idResidence)
     {
-        $var_token = Request::header('api_token');
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -202,7 +204,7 @@ class ResidenceController extends Controller
      */
     public function store(Request $request)
     {   
-        $var_token = Request::header('api_token');
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -210,21 +212,31 @@ class ResidenceController extends Controller
             {
                 DB::beginTransaction();  
 
-                $residence = Request::header('jsonObject');
+                $residence = $request->get('jsonObject');
                 //retorna array, se tirar o true do json_decode vai retornar um objeto e vai dar erro em tudo.
                 $residence = json_decode($residence,true);
-
                 //Cria a localização desta residencia.
-                $location = $residence['location'];
-                $location = Location::create($location);
+
+                $location = $residence['location']; 
+                $city = $location['city'];
+
+                $location = Location::create([
+                    'latitude' => $location['latitude'],
+                    'longitude' => $location['longitude'],
+                    'idCity' => $city['idCity'],
+                    'tries' => 0,   
+                    'active' => true,
+                ]);
 
                 //Cria as preferencias da residencia.
-                $preference = $user['preference'];
+                $preference = $residence['preference'];
                 $preference = Preference::create($preference);
+
+                $user = $residence['user'];
                 
                 $residence = Residence::create([
                     'idLocation' => $location['idLocation'],
-                    'idUser' => $residence['idUser'],
+                    'idUser' => $user['idUser'],
                     'idPreference' => $preference['idPreference'],
                     'title' => $residence['title'],
                     'description' => $residence['description'],
@@ -256,7 +268,8 @@ class ResidenceController extends Controller
      */
     public function show($id)
     {
-        $var_token = Request::header('api_token');
+        $var_token = $_GET['api_token'];
+        //$var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -278,7 +291,7 @@ class ResidenceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $var_token = Request::header('api_token');
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -301,7 +314,7 @@ class ResidenceController extends Controller
      */
     public function destroy($id)
     {
-        $var_token = Request::header('api_token');
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {

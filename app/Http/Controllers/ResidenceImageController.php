@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\ResidenceImage;
-use Illuminate\Support\Facades\Request;
+use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as RequestF;
 
 class ResidenceImageController extends Controller
 {
@@ -15,7 +17,7 @@ class ResidenceImageController extends Controller
      */
     public function index()
     {
-        $var_token = Request::header('api_token');
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -30,10 +32,10 @@ class ResidenceImageController extends Controller
 
     public function high($idResidenceImage)
     {
-        $var_token = Request::header('api_token');
-        $user_token = User::where('api_token',$var_token)->first();
+      //  $var_token = RequestF::header('api_token');
+      //  $user_token = User::where('api_token',$var_token)->first();
 
-        if($user_token != null) {
+      //  if($user_token != null) {
              $residenceImage = ResidenceImage::with('residence')
             ->where('idResidenceImage', '=', $idResidenceImage)
             ->orderBy('orderImage','desc')
@@ -43,19 +45,19 @@ class ResidenceImageController extends Controller
             $data = base64_encode(file_get_contents($path));
             $src = 'data: '.mime_content_type($path).';base64,'.$data;
             echo '<img src="'.$src.'">';
-        } else { return response()->json(array(
+       /* } else { return response()->json(array(
                         'code'      =>  404,
                         'message'   =>  'Usuário não autenticado'
                         ), 404);
-                }
+                }*/
     }
 
      public function medium($idResidenceImage)
     {
-        $var_token = Request::header('api_token');
-        $user_token = User::where('api_token',$var_token)->first();
+        //$var_token = RequestF::header('api_token');
+        //$user_token = User::where('api_token',$var_token)->first();
 
-        if($user_token != null) {
+        //if($user_token != null) {
              $residenceImage = ResidenceImage::with('residence')
             ->where('idResidenceImage', '=', $idResidenceImage)
             ->orderBy('orderImage','desc')
@@ -65,19 +67,19 @@ class ResidenceImageController extends Controller
             $data = base64_encode(file_get_contents($path));
             $src = 'data: '.mime_content_type($path).';base64,'.$data;
             echo '<img src="'.$src.'">';
-        } else { return response()->json(array(
+       /* } else { return response()->json(array(
                         'code'      =>  404,
                         'message'   =>  'Usuário não autenticado'
                         ), 404);
-                }
+                }*/
     }
 
      public function low($idResidenceImage)
     {
-        $var_token = Request::header('api_token');
-        $user_token = User::where('api_token',$var_token)->first();
+        //$var_token = Request::header('api_token');
+        //$user_token = User::where('api_token',$var_token)->first();
 
-        if($user_token != null) {
+        //if($user_token != null) {
              $residenceImage = ResidenceImage::with('residence')
             ->where('idResidenceImage', '=', $idResidenceImage)
             ->orderBy('orderImage','desc')
@@ -87,11 +89,11 @@ class ResidenceImageController extends Controller
             $data = base64_encode(file_get_contents($path));
             $src = 'data: '.mime_content_type($path).';base64,'.$data;
             echo '<img src="'.$src.'">';
-        } else { return response()->json(array(
+       /* } else { return response()->json(array(
                         'code'      =>  404,
                         'message'   =>  'Usuário não autenticado'
                         ), 404);
-                }
+                }*/
     }
 
     /**
@@ -101,7 +103,7 @@ class ResidenceImageController extends Controller
      */
     public function residence($idResidence)
     {
-        $var_token = Request::header('api_token');
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -145,7 +147,7 @@ class ResidenceImageController extends Controller
      */
     public function topAllResidencesLimit($id,$qtReg)
     {
-        $var_token = Request::header('api_token');
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -194,7 +196,7 @@ class ResidenceImageController extends Controller
      */
     public function store(Request $request)
     {
-        $var_token = Request::header('api_token');
+        $var_token = $request->get('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -205,31 +207,28 @@ class ResidenceImageController extends Controller
             $residence = $residenceImageReceive['residence'];
 
             //Adiciona as imagens do usuario.
-               $residenceImage = $residenceImageReceive;
-               //foreach($userImages as $userImage){
-                   $file = $residenceImage['path'];
-                  // $size = pathinfo($file);
-                  // dd($size);
-                   $file = base64_decode($file);
+            $residenceImage = $residenceImageReceive;
+            $file = $residenceImage['path'];
+            $file = base64_decode($file);//imap_base64($file);
 
-                    $name_image = "userImage_".time().".png";
-                    $path_high = public_path()."/img/residenceImage/high/".$name_image;
-                    $path_medium = public_path()."/img/residenceImage/medium/".$name_image;
-                    $path_low = public_path()."/img/residenceImage/low/".$name_image;
+            $name_image = "userImage_".time().".jpeg";
+            $path_high = public_path()."/img/residenceImage/high/".$name_image;
+            $path_medium = public_path()."/img/residenceImage/medium/".$name_image;
+            $path_low = public_path()."/img/residenceImage/low/".$name_image;
 
-                    Image::make($file)->save($path_high);
-                    $size = getimagesize(   public_path()."/img/residenceImage/high/".$name_image);
-                    Image::make($file)->resize($size[0]/3, $size[1]/3)->save($path_medium);
-                    Image::make($file)->resize($size[0]/5, $size[1]/5)->save($path_low);
+            Image::make($file)->save($path_high);
+            $size = getimagesize(public_path()."/img/residenceImage/high/".$name_image);
+            Image::make($file)->resize($size[0]/3, $size[1]/3)->save($path_medium);
+            Image::make($file)->resize($size[0]/5, $size[1]/5)->save($path_low);
 
-                    $residenceImageReceive = ResidenceImage::create([
-                        'path' => $name_image,
+            $residenceImageReceive = ResidenceImage::create([
+                'path' => $name_image,
                        // 'resource' => $userImage['resource'],
-                        'orderImage' => $userImage['orderImage'],
-                        'idUser' => $user['idUser'],
-                        'tries' => 0,
-                        'active' => true,
-                        ]);   
+                'orderImage' => $residenceImage['orderImage'],
+                'idUser' => $residence['idResidence'],
+                'tries' => 0,
+                'active' => true,
+                ]);   
                // }
 
             return response()->json($residenceImageReceive);
@@ -242,23 +241,23 @@ class ResidenceImageController extends Controller
 
     /**
      * Display the specified resource.
-     *
+     *  
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $var_token = Request::header('api_token');
-        $user_token = User::where('api_token',$var_token)->first();
+        //$var_token = RequestF::header('api_token');
+        //$user_token = User::where('api_token',$var_token)->first();
 
-        if($user_token != null) {
+        //if($user_token != null) {
             $all = ResidenceImage::with('residence')->findOrFail($id);
             return response()->json($all);
-        } else { return response()->json(array(
-                        'code'      =>  404,
-                        'message'   =>  'Usuário não autenticado'
-                        ), 404);
-                }
+        //} else { return response()->json(array(
+        //                'code'      =>  404,
+        //                'message'   =>  'Usuário não autenticado'
+        //                ), 404);
+         //       }
     }
 
     /**
@@ -270,7 +269,7 @@ class ResidenceImageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $var_token = Request::header('api_token');
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {
@@ -293,7 +292,7 @@ class ResidenceImageController extends Controller
      */
     public function destroy($id)
     {
-        $var_token = Request::header('api_token');
+        $var_token = RequestF::header('api_token');
         $user_token = User::where('api_token',$var_token)->first();
 
         if($user_token != null) {

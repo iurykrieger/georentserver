@@ -119,7 +119,7 @@ public function low($idUserImage)
             //Adiciona as imagens do usuario.
             $userImage = $userImageReceive;
             $file = $userImage['path'];
-            $file = base64_decode($file);;//imap_base64($file);
+            $file = base64_decode($file);//imap_base64($file);
 
             $name_image = "userImage_".time().".jpeg";
             $path_high = public_path()."/img/userImage/high/".$name_image;

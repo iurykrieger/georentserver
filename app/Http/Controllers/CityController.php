@@ -30,17 +30,17 @@ class CityController extends Controller
 
     public function state($idState)
     {
-        $var_token = Request::header('api_token');
-        $user_token = User::where('api_token',$var_token)->first();
+        //$var_token = Request::header('api_token');
+       // $user_token = User::where('api_token',$var_token)->first();
 
-        if($user_token != null) {
+       // if($user_token != null) {
             $state = City::where('uf', '=', $idState)->get();    
             return response()->json($state);
-        } else { return response()->json(array(
-                        'code'      =>  404,
-                        'message'   =>  'Usuário não autenticado'
-                        ), 404);
-                }
+      //  } else { return response()->json(array(
+       //                 'code'      =>  404,
+       //                 'message'   =>  'Usuário não autenticado'
+       //                 ), 404);
+       //         }
     }
 
 
